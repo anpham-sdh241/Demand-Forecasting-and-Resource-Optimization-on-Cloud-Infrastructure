@@ -1,0 +1,55 @@
+{
+  "memory_usage_pct": {
+    "n_features": 7,
+    "features": [
+      "load-15m",
+      "sys-context-switch-rate",
+      "cpu-system",
+      "cpu-user",
+      "load-5m",
+      "sys-mem-buffered",
+      "sys-mem-free"
+    ],
+    "correlations": {
+      "load-15m": 0.544091555380621,
+      "sys-context-switch-rate": 0.44312834207260815,
+      "cpu-system": 0.42788222915498336,
+      "cpu-user": 0.39725907633576796,
+      "load-5m": 0.3576384717884595,
+      "sys-mem-buffered": 0.31932635087497996,
+      "sys-mem-free": -0.31378897662139393
+    }
+  },
+  "cpu_total_usage": {
+    "n_features": 7,
+    "features": [
+      "sys-context-switch-rate",
+      "sys-fork-rate",
+      "sys-interrupt-rate",
+      "load-15m",
+      "load-5m",
+      "disk-io-write",
+      "sys-mem-available"
+    ],
+    "correlations": {
+      "sys-context-switch-rate": 0.6426811491444221,
+      "sys-fork-rate": 0.5034881214695769,
+      "sys-interrupt-rate": 0.3680066018177477,
+      "load-15m": 0.3487136118863225,
+      "load-5m": 0.3073519390537054,
+      "disk-io-write": 0.3051694710347762,
+      "sys-mem-available": -0.442327892629603
+    }
+  },
+  "system_load": {
+    "n_features": 2,
+    "features": [
+      "load-5m",
+      "load-15m"
+    ],
+    "correlations": {
+      "load-5m": 0.7557111262947447,
+      "load-15m": 0.48608198071007425
+    }
+  }
+}

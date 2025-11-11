@@ -1,0 +1,119 @@
+{
+  "model": "ARIMAX",
+  "timestamp": "2025-11-11 15:58:44",
+  "forecast_horizon": 20,
+  "forecast_horizon_minutes": 10.0,
+  "targets": {
+    "memory_usage_pct": {
+      "model_config": {
+        "order": [
+          2,
+          0,
+          2
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "n_features": 7
+      },
+      "training": {
+        "samples": 68599,
+        "time_seconds": 845.0137257575989,
+        "aic": -134726.45509332727,
+        "bic": -134616.82321929155,
+        "converged": false,
+        "model_path": "models\\arimax_memory_usage_pct_20251111_154333.pkl"
+      },
+      "forecasting": {
+        "n_predictions": 17131,
+        "time_seconds": 178.33566427230835
+      },
+      "metrics": {
+        "mae": 3.6359199929404955,
+        "rmse": 4.121623114865005,
+        "mse": 16.987777100989504,
+        "mape": 882.564595719893,
+        "r2": -20.68017809620289,
+        "max_error": 7.000779665146805,
+        "median_ae": 3.747629781093234
+      }
+    },
+    "cpu_total_usage": {
+      "model_config": {
+        "order": [
+          2,
+          0,
+          2
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "n_features": 7
+      },
+      "training": {
+        "samples": 68599,
+        "time_seconds": 297.685261964798,
+        "aic": 136475.96791428587,
+        "bic": 136585.5997883216,
+        "converged": true,
+        "model_path": "models\\arimax_cpu_total_usage_20251111_154831.pkl"
+      },
+      "forecasting": {
+        "n_predictions": 17131,
+        "time_seconds": 177.8339705467224
+      },
+      "metrics": {
+        "mae": 0.3016958109136319,
+        "rmse": 0.7950330621796872,
+        "mse": 0.6320775699588103,
+        "mape": 105.18291521799483,
+        "r2": 0.33957617496521064,
+        "max_error": 20.58848654833881,
+        "median_ae": 0.15195348379612428
+      }
+    },
+    "system_load": {
+      "model_config": {
+        "order": [
+          2,
+          0,
+          2
+        ],
+        "seasonal_order": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "n_features": 2
+      },
+      "training": {
+        "samples": 68599,
+        "time_seconds": 110.43980073928833,
+        "aic": 1649.5136260971206,
+        "bic": 1713.4655526179529,
+        "converged": true,
+        "model_path": "models\\arimax_system_load_20251111_155022.pkl"
+      },
+      "forecasting": {
+        "n_predictions": 17131,
+        "time_seconds": 138.68246054649353
+      },
+      "metrics": {
+        "mae": 1.4719190482825144,
+        "rmse": 1.8342663217302917,
+        "mse": 3.364532939033974,
+        "mape": 2456.337800160761,
+        "r2": -2.50679905921065,
+        "max_error": 11.49774687114192,
+        "median_ae": 1.4300657827077847
+      }
+    }
+  }
+}
