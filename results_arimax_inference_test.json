@@ -1,0 +1,133 @@
+{
+  "model": "arimax",
+  "timestamp": "2025-11-18 17:05:17",
+  "targets": {
+    "memory_usage_pct": {
+      "model_path": "models\\arimax_memory_usage_pct_20251111_154333.pkl",
+      "metadata": {
+        "model_name": "arimax",
+        "target": "memory_usage_pct",
+        "config": {
+          "order": [
+            2,
+            0,
+            2
+          ],
+          "seasonal_order": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "n_features": 7,
+          "features": [
+            "load-15m",
+            "sys-context-switch-rate",
+            "cpu-system",
+            "cpu-user",
+            "load-5m",
+            "sys-mem-buffered",
+            "sys-mem-free"
+          ]
+        },
+        "timestamp": "20251111_154333",
+        "saved_at": "2025-11-11 15:43:33"
+      },
+      "samples": 17150,
+      "runtime_seconds": 0.885995626449585,
+      "ms_per_sample": 0.05166155256265802,
+      "metrics": {
+        "mae": 3.7342153092990302,
+        "rmse": 4.218339262973627,
+        "mse": 17.794386137544883,
+        "mape": 911.8404164073077,
+        "r2": -21.727431967421435,
+        "max_error": 7.118625227279903,
+        "median_ae": 3.863027737244426
+      }
+    },
+    "cpu_total_usage": {
+      "model_path": "models\\arimax_cpu_total_usage_20251111_154831.pkl",
+      "metadata": {
+        "model_name": "arimax",
+        "target": "cpu_total_usage",
+        "config": {
+          "order": [
+            2,
+            0,
+            2
+          ],
+          "seasonal_order": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "n_features": 7,
+          "features": [
+            "sys-context-switch-rate",
+            "sys-fork-rate",
+            "sys-interrupt-rate",
+            "load-15m",
+            "load-5m",
+            "disk-io-write",
+            "sys-mem-available"
+          ]
+        },
+        "timestamp": "20251111_154831",
+        "saved_at": "2025-11-11 15:48:31"
+      },
+      "samples": 17150,
+      "runtime_seconds": 0.7839984893798828,
+      "ms_per_sample": 0.04571419763148005,
+      "metrics": {
+        "mae": 0.30163738152103126,
+        "rmse": 0.7946910739255479,
+        "mse": 0.6315339029769407,
+        "mape": 105.06713110217535,
+        "r2": 0.3396837565898987,
+        "max_error": 20.58786628643949,
+        "median_ae": 0.15198507039280582
+      }
+    },
+    "system_load": {
+      "model_path": "models\\arimax_system_load_20251111_155022.pkl",
+      "metadata": {
+        "model_name": "arimax",
+        "target": "system_load",
+        "config": {
+          "order": [
+            2,
+            0,
+            2
+          ],
+          "seasonal_order": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "n_features": 2,
+          "features": [
+            "load-5m",
+            "load-15m"
+          ]
+        },
+        "timestamp": "20251111_155022",
+        "saved_at": "2025-11-11 15:50:22"
+      },
+      "samples": 17150,
+      "runtime_seconds": 0.8170084953308105,
+      "ms_per_sample": 0.04763897931958079,
+      "metrics": {
+        "mae": 1.3803412259942744,
+        "rmse": 1.792192620268962,
+        "mse": 3.211954388146528,
+        "mape": 2399.6392280922328,
+        "r2": -2.349771038378897,
+        "max_error": 11.749535570807508,
+        "median_ae": 1.268681064819431
+      }
+    }
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "model": "svr",
+  "timestamp": "2025-11-18 17:38:36",
+  "targets": {
+    "memory_usage_pct": {
+      "model_path": "models\\svr_memory_usage_pct_20251111_184735.pkl",
+      "metadata": {
+        "model_name": "svr",
+        "target": "memory_usage_pct",
+        "config": {
+          "kernel": "rbf",
+          "params": {
+            "C": 1,
+            "epsilon": 0.2,
+            "gamma": 0.01
+          },
+          "n_features": 7,
+          "features": [
+            "load-15m",
+            "sys-context-switch-rate",
+            "cpu-system",
+            "cpu-user",
+            "load-5m",
+            "sys-mem-buffered",
+            "sys-mem-free"
+          ]
+        },
+        "timestamp": "20251111_184735",
+        "saved_at": "2025-11-11 18:47:35"
+      },
+      "samples": 17150,
+      "runtime_seconds": 112.58845114707947,
+      "ms_per_sample": 6.564924265135829,
+      "metrics": {
+        "mae": 0.41694052376233504,
+        "rmse": 0.5473608905735264,
+        "mse": 0.299603944529444,
+        "mape": 143.17808953595528,
+        "r2": 0.6173384002217948,
+        "max_error": 5.737465068307879,
+        "median_ae": 0.3293118760807616
+      }
+    },
+    "cpu_total_usage": {
+      "model_path": "models\\svr_cpu_total_usage_20251111_203645.pkl",
+      "metadata": {
+        "model_name": "svr",
+        "target": "cpu_total_usage",
+        "config": {
+          "kernel": "rbf",
+          "params": {
+            "C": 10,
+            "epsilon": 0.2,
+            "gamma": "scale"
+          },
+          "n_features": 7,
+          "features": [
+            "sys-context-switch-rate",
+            "sys-fork-rate",
+            "sys-interrupt-rate",
+            "load-15m",
+            "load-5m",
+            "disk-io-write",
+            "sys-mem-available"
+          ]
+        },
+        "timestamp": "20251111_203645",
+        "saved_at": "2025-11-11 20:36:45"
+      },
+      "samples": 17150,
+      "runtime_seconds": 33.86151051521301,
+      "ms_per_sample": 1.9744321000124205,
+      "metrics": {
+        "mae": 0.19389528185943108,
+        "rmse": 0.5052591200911299,
+        "mse": 0.2552867784352628,
+        "mape": 68.15584921267238,
+        "r2": 0.733078452741761,
+        "max_error": 11.357502159952617,
+        "median_ae": 0.07440390525466507
+      }
+    },
+    "system_load": {
+      "model_path": "models\\svr_system_load_20251111_223919.pkl",
+      "metadata": {
+        "model_name": "svr",
+        "target": "system_load",
+        "config": {
+          "kernel": "rbf",
+          "params": {
+            "C": 10,
+            "epsilon": 0.1,
+            "gamma": "scale"
+          },
+          "n_features": 2,
+          "features": [
+            "load-5m",
+            "load-15m"
+          ]
+        },
+        "timestamp": "20251111_223919",
+        "saved_at": "2025-11-11 22:39:19"
+      },
+      "samples": 17150,
+      "runtime_seconds": 101.87799191474915,
+      "ms_per_sample": 5.940407691822108,
+      "metrics": {
+        "mae": 0.26807368695715067,
+        "rmse": 0.47830275875959927,
+        "mse": 0.2287735290370434,
+        "mape": 452.80116163088053,
+        "r2": 0.7614103908996539,
+        "max_error": 6.267459849468359,
+        "median_ae": 0.14098396369853072
+      }
+    }
+  }
+}
