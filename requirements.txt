@@ -7,4 +7,5 @@ jupyter==1.0.0
 notebook==7.0.6
 statsmodels==0.14.1
 prophet==1.1.5
+cmdstanpy>=1.1.0
 torch==2.2.2

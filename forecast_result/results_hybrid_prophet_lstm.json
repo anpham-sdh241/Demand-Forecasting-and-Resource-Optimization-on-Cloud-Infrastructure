@@ -1,0 +1,124 @@
+{
+  "model": "hybrid_prophet_lstm",
+  "timestamp": "2025-11-26 11:29:18",
+  "targets": {
+    "memory_usage_pct": {
+      "prophet_metrics": {
+        "mae": 9.926635821207064,
+        "rmse": 10.526977275074636,
+        "mse": 110.8172505499378,
+        "mape": 2640.025218592631,
+        "r2": -140.53854497831531,
+        "max_error": 14.075405657836843,
+        "median_ae": 11.010237779396908
+      },
+      "hybrid_metrics": {
+        "mae": 8.272371676208538,
+        "rmse": 8.966701171857482,
+        "mse": 80.40172990539034,
+        "mape": 2114.406401305927,
+        "r2": -101.69108652375635,
+        "max_error": 12.402417092484448,
+        "median_ae": 9.337249214044514
+      },
+      "prophet_time_s": 575.8565201759338,
+      "lstm_time_s": 1833.3728251457214,
+      "model_path": "models\\hybrid_prophet_lstm_memory_usage_pct_20251126_102014.pkl"
+    },
+    "cpu_total_usage": {
+      "prophet_metrics": {
+        "mae": 2.4047610408128977,
+        "rmse": 2.5532425903639995,
+        "mse": 6.519047725248667,
+        "mape": 995.8723770665111,
+        "r2": -5.816155212342641,
+        "max_error": 12.145313234121652,
+        "median_ae": 2.6062384760704287
+      },
+      "hybrid_metrics": {
+        "mae": 2.3083348033914786,
+        "rmse": 2.514377860900723,
+        "mse": 6.322096027387694,
+        "mape": 948.9279730600887,
+        "r2": -5.610227383841647,
+        "max_error": 11.724323188604938,
+        "median_ae": 2.314670864194998
+      },
+      "prophet_time_s": 139.0688660144806,
+      "lstm_time_s": 1820.192150592804,
+      "model_path": "models\\hybrid_prophet_lstm_cpu_total_usage_20251126_105508.pkl"
+    },
+    "system_load": {
+      "prophet_metrics": {
+        "mae": 0.7574830630461575,
+        "rmse": 1.062699367647499,
+        "mse": 1.1293299459983943,
+        "mape": 674.5421055800596,
+        "r2": -0.17778657126648034,
+        "max_error": 11.69599638888203,
+        "median_ae": 0.7044954697142023
+      },
+      "hybrid_metrics": {
+        "mae": 0.6920460322982149,
+        "rmse": 1.0305037542938933,
+        "mse": 1.0619379876138086,
+        "mape": 494.04117330201734,
+        "r2": -0.10750299835852584,
+        "max_error": 11.797917450228514,
+        "median_ae": 0.6183664052477348
+      },
+      "prophet_time_s": 67.75728726387024,
+      "lstm_time_s": 1872.0786123275757,
+      "model_path": "models\\hybrid_prophet_lstm_system_load_20251126_112915.pkl"
+    }
+  },
+  "training": {
+    "memory_usage_pct": {
+      "prophet_time_s": 575.8565201759338,
+      "lstm_time_s": 1833.3728251457214,
+      "model_path": "models\\hybrid_prophet_lstm_memory_usage_pct_20251126_102014.pkl"
+    },
+    "cpu_total_usage": {
+      "prophet_time_s": 139.0688660144806,
+      "lstm_time_s": 1820.192150592804,
+      "model_path": "models\\hybrid_prophet_lstm_cpu_total_usage_20251126_105508.pkl"
+    },
+    "system_load": {
+      "prophet_time_s": 67.75728726387024,
+      "lstm_time_s": 1872.0786123275757,
+      "model_path": "models\\hybrid_prophet_lstm_system_load_20251126_112915.pkl"
+    }
+  },
+  "config": {
+    "prophet": {
+      "seasonality_mode": "additive",
+      "weekly_seasonality": true,
+      "daily_seasonality": true,
+      "yearly_seasonality": false,
+      "changepoint_prior_scale": 0.2,
+      "n_changepoints": 50,
+      "seasonality_prior_scale": 10.0,
+      "interval_width": 0.95,
+      "uncertainty_samples": 1000
+    },
+    "lstm": {
+      "hidden_size": 64,
+      "num_layers": 2,
+      "dropout": 0.1,
+      "epochs": 20,
+      "batch_size": 256,
+      "learning_rate": 0.001,
+      "window_size": 96,
+      "use_huber_loss": true,
+      "use_lr_scheduler": true,
+      "use_early_stopping": true,
+      "early_stop_patience": 10,
+      "lr_patience": 5,
+      "lr_factor": 0.5,
+      "min_lr": 1e-05,
+      "grad_clip_max_norm": 1.0
+    },
+    "series_freq": "30S",
+    "start_timestamp": "2024-01-01T00:00:00"
+  }
+}

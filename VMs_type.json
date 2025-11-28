@@ -1,0 +1,22 @@
+{
+    "B2s": {
+        "vcpus": 2,
+        "memory_gb": 4,
+        "cost_per_hour": 0.0416
+    },
+    "D2s_v3": {
+        "vcpus": 2,
+        "memory_gb": 8,
+        "cost_per_hour": 0.0960
+    },
+    "D8s_v3": {
+        "vcpus": 8,
+        "memory_gb": 64,
+        "cost_per_hour": 0.3840
+    },
+    "D32s_v3": {
+        "vcpus": 32,
+        "memory_gb": 128,
+        "cost_per_hour": 1.5360
+    }
+}
