@@ -21,6 +21,7 @@ Outputs:
 from __future__ import annotations
 
 import json
+import argparse
 from pathlib import Path
 from typing import Dict, Any, List
 
@@ -30,11 +31,7 @@ import torch
 from torch import nn
 from scipy.optimize import linprog
 
-from model_utils import (
-    get_latest_model,
-    load_model,
-    save_results,
-)
+from model_utils import get_latest_model, load_model, save_results
 
 # -----------------------------------------------------------------------------
 # Configuration
@@ -48,6 +45,13 @@ RESULTS_DIR = PROJECT_ROOT / "forecast_result"
 RESULTS_DIR.mkdir(exist_ok=True)
 
 TARGETS = ["memory_usage_pct", "cpu_total_usage", "system_load"]
+SUPPORTED_MODELS = {
+    "hybrid_prophet_lstm": "hybrid",
+    "arimax": "stats",
+    "random_forest": "ml",
+    "svr": "ml",
+}
+DEFAULT_MODEL_NAME = "hybrid_prophet_lstm"
 SERIES_FREQ = "30S"
 START_TIMESTAMP = pd.Timestamp("2024-01-01 00:00:00")
 
@@ -119,7 +123,7 @@ def inverse_scale(values, mean, std):
 # Forecast loading
 # -----------------------------------------------------------------------------
 
-def load_latest_models(model_name: str = "hybrid_prophet_lstm") -> Dict[str, Path]:
+def load_latest_models(model_name: str) -> Dict[str, Path]:
     model_paths: Dict[str, Path] = {}
     for target in TARGETS:
         model_paths[target] = Path(
@@ -132,8 +136,21 @@ def load_latest_models(model_name: str = "hybrid_prophet_lstm") -> Dict[str, Pat
     return model_paths
 
 
-def generate_forecasts(model_paths: Dict[str, Path]) -> pd.DataFrame:
-    """Run inference with latest models and build a forecast DataFrame."""
+def generate_forecasts(model_paths: Dict[str, Path], model_name: str) -> pd.DataFrame:
+    """Run inference and build a forecast DataFrame for the selected model."""
+    model_type = SUPPORTED_MODELS.get(model_name)
+    if model_type is None:
+        raise ValueError(f"Unsupported model: {model_name}")
+
+    if model_type == "hybrid":
+        return _generate_forecasts_hybrid(model_paths)
+    elif model_type == "stats":
+        return _generate_forecasts_stats(model_paths, model_name)
+    else:
+        return _generate_forecasts_ml(model_paths, model_name)
+
+
+def _generate_forecasts_hybrid(model_paths: Dict[str, Path]) -> pd.DataFrame:
     forecast_records: Dict[str, np.ndarray] = {}
     timestamps = None
 
@@ -198,6 +215,48 @@ def generate_forecasts(model_paths: Dict[str, Path]) -> pd.DataFrame:
     for target, values in forecast_records.items():
         forecast_df[target] = values
     return forecast_df
+
+
+def _generate_forecasts_ml(
+    model_paths: Dict[str, Path], model_name: str
+) -> pd.DataFrame:
+    forecast_records: Dict[str, np.ndarray] = {}
+    timestamps = None
+
+    for target in TARGETS:
+        y_train, y_test = load_series(target)
+        X_test = pd.read_csv(DATA_DIR / target / "X_test.csv")
+        model, metadata = load_model(str(model_paths[target]))
+
+        start_idx = len(y_train)
+        total_len = len(y_train) + len(y_test)
+        time_index = pd.date_range(
+            start=START_TIMESTAMP, periods=total_len, freq=SERIES_FREQ
+        )
+        test_index = time_index[start_idx:]
+
+        if model_name == "arimax":
+            preds = model.forecast(steps=len(y_test), exog=X_test)
+        else:
+            preds = model.predict(X_test)
+
+        preds = np.asarray(preds).flatten()
+        forecast_records[target] = preds
+        timestamps = test_index
+
+    if timestamps is None:
+        raise RuntimeError("No predictions generated.")
+
+    forecast_df = pd.DataFrame({"timestamp": timestamps})
+    for target, values in forecast_records.items():
+        forecast_df[target] = values
+    return forecast_df
+
+
+def _generate_forecasts_stats(
+    model_paths: Dict[str, Path], model_name: str
+) -> pd.DataFrame:
+    return _generate_forecasts_ml(model_paths, model_name)
 
 
 # -----------------------------------------------------------------------------
@@ -426,13 +485,14 @@ def build_schedule(
 # Main execution
 # -----------------------------------------------------------------------------
 
-def main():
+def run_planner(model_name: str):
     print("=== VM Resource Planner ===")
     print(f"Device: {DEVICE}")
+    print(f"Model: {model_name}")
 
     vm_catalog = load_vm_catalog(VM_TYPES_FILE)
-    model_paths = load_latest_models()
-    forecast_df = generate_forecasts(model_paths)
+    model_paths = load_latest_models(model_name)
+    forecast_df = generate_forecasts(model_paths, model_name)
 
     requirements_df = convert_forecasts_to_requirements(forecast_df, HOST_SPEC)
     peak_summary = summarize_peak_plans(requirements_df, vm_catalog)
@@ -479,6 +539,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="VM Resource Planner")
+    parser.add_argument(
+        "--model",
+        choices=list(SUPPORTED_MODELS.keys()),
+        default=DEFAULT_MODEL_NAME,
+        help="Model name to use for forecasting.",
+    )
+    args = parser.parse_args()
+    run_planner(args.model)
 
 
