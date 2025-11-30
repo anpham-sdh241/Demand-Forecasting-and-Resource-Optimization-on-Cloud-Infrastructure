@@ -1,0 +1,31 @@
+{
+  "description": "Normalization statistics (mean, std) for each target variable from cleaned_data.csv before StandardScaler",
+  "source_file": "processed_data/cleaned_data.csv",
+  "targets": {
+    "memory_usage_pct": {
+      "original_column": "memory_usage_pct",
+      "mean": 6.425797,
+      "std": 1.036564,
+      "min": 4.231077,
+      "max": 14.430087,
+      "unit": "percentage (0-100)"
+    },
+    "cpu_total_usage": {
+      "original_column": "cpu_total_usage",
+      "mean": 0.104861,
+      "std": 0.098521,
+      "min": 0.0365,
+      "max": 1.691,
+      "unit": "cores (rate of CPU seconds/second = number of cores being used)"
+    },
+    "system_load": {
+      "original_column": "load-1m",
+      "mean": 0.12972,
+      "std": 0.209039,
+      "min": 0.0,
+      "max": 5.06,
+      "unit": "load average (number of processes)"
+    }
+  }
+}
+

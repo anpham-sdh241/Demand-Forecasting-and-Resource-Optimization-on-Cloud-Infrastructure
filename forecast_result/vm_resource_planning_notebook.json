@@ -1,0 +1,2616 @@
+{
+  "model": "vm_resource_planner_notebook",
+  "host_spec": {
+    "total_cpu_cores": 1,
+    "total_memory_gb": 4,
+    "cpu_threshold_pct": 70,
+    "memory_threshold_pct": 75
+  },
+  "peak_summary": {
+    "peak_cpu_overflow": 1.3976890263497774,
+    "peak_memory_overflow": 0.0,
+    "minimize_overload_plan": {
+      "allocation": {
+        "B2s": 1
+      },
+      "total_vms": 1,
+      "total_cpu": 2.0,
+      "total_memory": 4.0,
+      "total_cost": 0.0416
+    },
+    "minimize_cost_plan": {
+      "allocation": {
+        "B2s": 1
+      },
+      "total_vms": 1,
+      "total_cpu": 2.0,
+      "total_memory": 4.0,
+      "total_cost": 0.0416
+    }
+  },
+  "schedule": [
+    {
+      "timestamp": "2024-01-24 19:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-24 20:00:00",
+      "cpu_overflow_cores": 0.41599885599121134,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-24 20:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-24 21:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-24 21:30:00",
+      "cpu_overflow_cores": 0.8446625081302739,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-24 22:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-24 22:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-24 23:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-24 23:30:00",
+      "cpu_overflow_cores": 0.8580987935962219,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 00:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 00:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 01:00:00",
+      "cpu_overflow_cores": 0.5411981474676182,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 01:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 02:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 02:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 03:00:00",
+      "cpu_overflow_cores": 0.9855270414582382,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 03:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 04:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 04:30:00",
+      "cpu_overflow_cores": 0.9329461486854942,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 05:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 05:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 06:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 06:30:00",
+      "cpu_overflow_cores": 0.49787012811850295,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 07:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 07:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 08:00:00",
+      "cpu_overflow_cores": 0.9786299960515528,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 08:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 09:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 09:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 10:00:00",
+      "cpu_overflow_cores": 0.9783480714294943,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 10:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 11:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 11:30:00",
+      "cpu_overflow_cores": 0.41580589076255214,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 12:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 12:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 13:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 13:30:00",
+      "cpu_overflow_cores": 0.7469708075410326,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 14:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 14:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 15:00:00",
+      "cpu_overflow_cores": 0.4142624648836728,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 15:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 16:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 16:30:00",
+      "cpu_overflow_cores": 0.2683395499530723,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 17:00:00",
+      "cpu_overflow_cores": 0.013640679036604597,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 17:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 18:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 18:30:00",
+      "cpu_overflow_cores": 0.6190182606763681,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 19:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 19:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 20:00:00",
+      "cpu_overflow_cores": 1.1426653608717197,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 20:30:00",
+      "cpu_overflow_cores": 0.24319706730508583,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 21:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 21:30:00",
+      "cpu_overflow_cores": 0.13599388759570363,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 22:00:00",
+      "cpu_overflow_cores": 0.6185258507571596,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-25 22:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 23:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-25 23:30:00",
+      "cpu_overflow_cores": 0.7667359008721117,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 00:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 00:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 01:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 01:30:00",
+      "cpu_overflow_cores": 0.49838882382435146,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 02:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 02:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 03:00:00",
+      "cpu_overflow_cores": 0.47163395742028347,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 03:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 04:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 04:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 05:00:00",
+      "cpu_overflow_cores": 0.9682445941921223,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 05:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 06:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 06:30:00",
+      "cpu_overflow_cores": 0.1200124436884038,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 07:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 07:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 08:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 08:30:00",
+      "cpu_overflow_cores": 1.2309022736038842,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 09:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 09:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 10:00:00",
+      "cpu_overflow_cores": 0.41580589076255214,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 10:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 11:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 11:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 12:00:00",
+      "cpu_overflow_cores": 1.082412763888009,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 12:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 13:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 13:30:00",
+      "cpu_overflow_cores": 1.1020168851573333,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 14:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 14:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 15:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 15:30:00",
+      "cpu_overflow_cores": 0.7043568735842898,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 16:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 16:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 17:00:00",
+      "cpu_overflow_cores": 0.9728513724961383,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 17:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 18:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 18:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 19:00:00",
+      "cpu_overflow_cores": 0.5552364764713589,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 19:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 20:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 20:30:00",
+      "cpu_overflow_cores": 0.6815101134206059,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 21:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 21:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 22:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 22:30:00",
+      "cpu_overflow_cores": 1.3976890263497774,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-26 23:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-26 23:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 00:00:00",
+      "cpu_overflow_cores": 0.3727927520471732,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 00:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 01:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 01:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 02:00:00",
+      "cpu_overflow_cores": 0.49907012923155336,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 02:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 03:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 03:30:00",
+      "cpu_overflow_cores": 0.6331948971734516,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 04:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 04:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 05:00:00",
+      "cpu_overflow_cores": 0.9267803941138208,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 05:30:00",
+      "cpu_overflow_cores": 0.4884603161101968,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 06:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 06:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 07:00:00",
+      "cpu_overflow_cores": 0.9329461486854942,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 07:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 08:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 08:30:00",
+      "cpu_overflow_cores": 0.889626947364778,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 09:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 09:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 10:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 10:30:00",
+      "cpu_overflow_cores": 1.082412763888009,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 11:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 11:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 12:00:00",
+      "cpu_overflow_cores": 0.6326963380080735,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 12:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 13:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 13:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 14:00:00",
+      "cpu_overflow_cores": 0.5439903077312012,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 14:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 15:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 15:30:00",
+      "cpu_overflow_cores": 0.9622206481621318,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 16:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 16:30:00",
+      "cpu_overflow_cores": 0.11898879886673042,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 17:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 17:30:00",
+      "cpu_overflow_cores": 0.7684859687941323,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 18:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 18:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 19:00:00",
+      "cpu_overflow_cores": 0.9622206481621318,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 19:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 20:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 20:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 21:00:00",
+      "cpu_overflow_cores": 0.868131314421658,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 21:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 22:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 22:30:00",
+      "cpu_overflow_cores": 0.9329461486854942,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-27 23:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-27 23:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 00:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 00:30:00",
+      "cpu_overflow_cores": 0.8320958136449224,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 01:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 01:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 02:00:00",
+      "cpu_overflow_cores": 0.8432215995434023,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 02:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 03:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 03:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 04:00:00",
+      "cpu_overflow_cores": 0.877171914592402,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 04:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 05:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 05:30:00",
+      "cpu_overflow_cores": 0.6652461906614728,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 06:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 06:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 07:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 07:30:00",
+      "cpu_overflow_cores": 0.6331948971734516,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 08:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 08:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 09:00:00",
+      "cpu_overflow_cores": 0.9081990348076787,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 09:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 10:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 10:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 11:00:00",
+      "cpu_overflow_cores": 1.1020168851573333,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 11:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 12:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 12:30:00",
+      "cpu_overflow_cores": 0.6446578545439159,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 13:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 13:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 14:00:00",
+      "cpu_overflow_cores": 0.5186074080969536,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 14:30:00",
+      "cpu_overflow_cores": 0.2824161529963052,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 15:00:00",
+      "cpu_overflow_cores": 0.23256439148098262,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 15:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 16:00:00",
+      "cpu_overflow_cores": 0.29835834797293925,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 16:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 17:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 17:30:00",
+      "cpu_overflow_cores": 0.3695036568826231,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 18:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 18:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 19:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 19:30:00",
+      "cpu_overflow_cores": 0.4884603161101968,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 20:00:00",
+      "cpu_overflow_cores": 0.032473347446549394,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 20:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 21:00:00",
+      "cpu_overflow_cores": 0.5508979494623019,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 21:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 22:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 22:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-28 23:00:00",
+      "cpu_overflow_cores": 0.6836148351958673,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-28 23:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 00:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 00:30:00",
+      "cpu_overflow_cores": 0.22466039452593223,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 01:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 01:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 02:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 02:30:00",
+      "cpu_overflow_cores": 0.7469708075410326,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 03:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 03:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 04:00:00",
+      "cpu_overflow_cores": 0.6218748015664999,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 04:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 05:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 05:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 06:00:00",
+      "cpu_overflow_cores": 0.9311189888498452,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 06:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 07:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 07:30:00",
+      "cpu_overflow_cores": 0.8320958136449224,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 08:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 08:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 09:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 09:30:00",
+      "cpu_overflow_cores": 0.7344566935151104,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 10:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 10:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 11:00:00",
+      "cpu_overflow_cores": 0.9918206805993985,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 11:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 12:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 12:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 13:00:00",
+      "cpu_overflow_cores": 1.3531305198581165,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 13:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 14:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 14:30:00",
+      "cpu_overflow_cores": 0.8136683417986468,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 15:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 15:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 16:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 16:30:00",
+      "cpu_overflow_cores": 0.12187518867487879,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 17:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 17:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 18:00:00",
+      "cpu_overflow_cores": 0.6185258507571596,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 18:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 19:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 19:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 20:00:00",
+      "cpu_overflow_cores": 0.9329461486854942,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 20:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 21:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 21:30:00",
+      "cpu_overflow_cores": 0.9639965464406239,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 22:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 22:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-29 23:00:00",
+      "cpu_overflow_cores": 0.20700015815154882,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-29 23:30:00",
+      "cpu_overflow_cores": 0.49907012923155336,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 00:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 00:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 01:00:00",
+      "cpu_overflow_cores": 1.082412763888009,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 01:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 02:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 02:30:00",
+      "cpu_overflow_cores": 0.9329461486854942,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 03:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 03:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 04:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 04:30:00",
+      "cpu_overflow_cores": 1.2178858233447636,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 05:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 05:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 06:00:00",
+      "cpu_overflow_cores": 0.5166582587632038,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 06:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 07:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 07:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 08:00:00",
+      "cpu_overflow_cores": 1.0115120587168984,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 08:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 09:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 09:30:00",
+      "cpu_overflow_cores": 0.4437446760416639,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 10:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 10:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 11:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 11:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 12:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 12:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 13:00:00",
+      "cpu_overflow_cores": 0.8432215995434023,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 13:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 14:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 14:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 15:00:00",
+      "cpu_overflow_cores": 0.8580987935962219,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 15:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 16:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 16:30:00",
+      "cpu_overflow_cores": 0.6815101134206059,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "B2s\u00d71",
+      "min_overload_cost_per_hour": 0.0416,
+      "min_cost_plan": "B2s\u00d71",
+      "min_cost_cost_per_hour": 0.0416
+    },
+    {
+      "timestamp": "2024-01-30 17:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 17:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 18:00:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    },
+    {
+      "timestamp": "2024-01-30 18:30:00",
+      "cpu_overflow_cores": 0.0,
+      "memory_overflow_gb": 0.0,
+      "min_overload_plan": "Host only",
+      "min_overload_cost_per_hour": 0.0,
+      "min_cost_plan": "Host only",
+      "min_cost_cost_per_hour": 0.0
+    }
+  ]
+}

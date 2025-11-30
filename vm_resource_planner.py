@@ -41,6 +41,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 DATA_DIR = PROJECT_ROOT / "processed_data"
 MODELS_DIR = PROJECT_ROOT / "models"
 VM_TYPES_FILE = PROJECT_ROOT / "VMs_type.json"
+NORMALIZATION_STATS_FILE = PROJECT_ROOT / "processed_data" / "normalization_stats.json"
 RESULTS_DIR = PROJECT_ROOT / "forecast_result"
 RESULTS_DIR.mkdir(exist_ok=True)
 
@@ -59,8 +60,8 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Host machine specification (can be adjusted)
 HOST_SPEC = {
-    "total_cpu_cores": 16,
-    "total_memory_gb": 64,
+    "total_cpu_cores": 1,
+    "total_memory_gb": 4,
     "cpu_threshold_pct": 70,     # begin offloading after 70% CPU usage
     "memory_threshold_pct": 75,  # begin offloading after 75% memory usage
 }
@@ -119,6 +120,50 @@ def inverse_scale(values, mean, std):
     return values * std + mean
 
 
+def load_normalization_stats() -> Dict[str, Dict[str, float]]:
+    """Load normalization statistics for inverse transformation."""
+    if not NORMALIZATION_STATS_FILE.exists():
+        raise FileNotFoundError(
+            f"Normalization stats not found: {NORMALIZATION_STATS_FILE}\n"
+            "Please run ETL pipeline to generate this file."
+        )
+    with open(NORMALIZATION_STATS_FILE, "r") as f:
+        stats = json.load(f)
+    return stats["targets"]
+
+
+def inverse_transform_forecasts(
+    forecast_df: pd.DataFrame,
+    norm_stats: Dict[str, Dict[str, float]],
+) -> pd.DataFrame:
+    """
+    Convert normalized forecast values back to original scale.
+    
+    Args:
+        forecast_df: DataFrame with normalized forecast values
+        norm_stats: Dictionary with mean/std for each target
+        
+    Returns:
+        DataFrame with values in original scale
+    """
+    df = forecast_df.copy()
+    
+    for target in TARGETS:
+        if target not in df.columns:
+            continue
+        if target not in norm_stats:
+            print(f"Warning: No normalization stats for {target}, skipping inverse transform")
+            continue
+            
+        mean = norm_stats[target]["mean"]
+        std = norm_stats[target]["std"]
+        
+        # Inverse transform: x_original = x_normalized * std + mean
+        df[target] = df[target] * std + mean
+        
+    return df
+
+
 # -----------------------------------------------------------------------------
 # Forecast loading
 # -----------------------------------------------------------------------------
@@ -136,18 +181,40 @@ def load_latest_models(model_name: str) -> Dict[str, Path]:
     return model_paths
 
 
-def generate_forecasts(model_paths: Dict[str, Path], model_name: str) -> pd.DataFrame:
-    """Run inference and build a forecast DataFrame for the selected model."""
+def generate_forecasts(
+    model_paths: Dict[str, Path],
+    model_name: str,
+    apply_inverse_transform: bool = True,
+) -> pd.DataFrame:
+    """
+    Run inference and build a forecast DataFrame for the selected model.
+    
+    Args:
+        model_paths: Dictionary mapping target names to model file paths
+        model_name: Name of the model to use
+        apply_inverse_transform: If True, convert normalized predictions back to original scale
+        
+    Returns:
+        DataFrame with forecast values (in original scale if apply_inverse_transform=True)
+    """
     model_type = SUPPORTED_MODELS.get(model_name)
     if model_type is None:
         raise ValueError(f"Unsupported model: {model_name}")
 
     if model_type == "hybrid":
-        return _generate_forecasts_hybrid(model_paths)
+        forecast_df = _generate_forecasts_hybrid(model_paths)
     elif model_type == "stats":
-        return _generate_forecasts_stats(model_paths, model_name)
+        forecast_df = _generate_forecasts_stats(model_paths, model_name)
     else:
-        return _generate_forecasts_ml(model_paths, model_name)
+        forecast_df = _generate_forecasts_ml(model_paths, model_name)
+    
+    # Apply inverse transformation to convert normalized values back to original scale
+    if apply_inverse_transform:
+        norm_stats = load_normalization_stats()
+        forecast_df = inverse_transform_forecasts(forecast_df, norm_stats)
+        print("✓ Applied inverse transformation to forecasts (original scale)")
+    
+    return forecast_df
 
 
 def _generate_forecasts_hybrid(model_paths: Dict[str, Path]) -> pd.DataFrame:
@@ -266,26 +333,50 @@ def _generate_forecasts_stats(
 def convert_forecasts_to_requirements(
     forecast_df: pd.DataFrame, host_spec: Dict[str, float]
 ) -> pd.DataFrame:
+
     df = forecast_df.copy()
 
+    # Clip negative values to 0
     mem_pct = df["memory_usage_pct"].clip(lower=0)
-    cpu_pct = df["cpu_total_usage"].clip(lower=0)
+    
+    # cpu_total_usage = "rate of CPU seconds/second" = số cores đang sử dụng
+    # Đây là giá trị ABSOLUTE (cores), KHÔNG PHẢI percentage
+    cpu_cores_used = df["cpu_total_usage"].clip(lower=0)
+    
+    # system_load = load average = số processes đang chờ/chạy trên CPU
     system_load = df["system_load"].clip(lower=0)
 
-    mem_total_gb = host_spec["total_memory_gb"] * mem_pct / 100.0
+    # =========================================================================
+    # MEMORY CALCULATIONS
+    # =========================================================================
+    # memory_required_gb: Chuyển % thành GB thực tế
+    mem_required_gb = host_spec["total_memory_gb"] * mem_pct / 100.0
+    
+    # memory_threshold_gb: Ngưỡng an toàn (VD: 75% của tổng RAM)
     mem_threshold_gb = (
         host_spec["total_memory_gb"] * host_spec["memory_threshold_pct"] / 100.0
     )
-    mem_overflow_gb = np.maximum(0.0, mem_total_gb - mem_threshold_gb)
+    
+    # memory_overflow_gb: Phần RAM vượt ngưỡng cần offload
+    mem_overflow_gb = np.maximum(0.0, mem_required_gb - mem_threshold_gb)
 
-    cpu_pct_cores = host_spec["total_cpu_cores"] * cpu_pct / 100.0
+    # =========================================================================
+    # CPU CALCULATIONS
+    # =========================================================================
+    # cpu_required_cores: Lấy max của CPU usage và load average
+    # - cpu_cores_used: cores đang consume CPU time
+    # - system_load: processes đang cạnh tranh CPU
+    cpu_required_cores = np.maximum(cpu_cores_used, system_load)
+    
+    # cpu_threshold_cores: Ngưỡng an toàn (VD: 70% của tổng cores)
     cpu_threshold_cores = (
         host_spec["total_cpu_cores"] * host_spec["cpu_threshold_pct"] / 100.0
     )
-    cpu_required_cores = np.maximum(cpu_pct_cores, system_load)
+    
+    # cpu_overflow_cores: Phần CPU vượt ngưỡng cần offload sang VM
     cpu_overflow_cores = np.maximum(0.0, cpu_required_cores - cpu_threshold_cores)
 
-    df["memory_required_gb"] = mem_total_gb
+    df["memory_required_gb"] = mem_required_gb
     df["memory_overflow_gb"] = mem_overflow_gb
     df["cpu_required_cores"] = cpu_required_cores
     df["cpu_overflow_cores"] = cpu_overflow_cores
@@ -493,6 +584,13 @@ def run_planner(model_name: str):
     vm_catalog = load_vm_catalog(VM_TYPES_FILE)
     model_paths = load_latest_models(model_name)
     forecast_df = generate_forecasts(model_paths, model_name)
+    
+    # Display forecast statistics for verification
+    print("\n=== Forecast Statistics (Original Scale) ===")
+    for target in TARGETS:
+        if target in forecast_df.columns:
+            vals = forecast_df[target]
+            print(f"  {target}: min={vals.min():.4f}, max={vals.max():.4f}, mean={vals.mean():.4f}")
 
     requirements_df = convert_forecasts_to_requirements(forecast_df, HOST_SPEC)
     peak_summary = summarize_peak_plans(requirements_df, vm_catalog)
