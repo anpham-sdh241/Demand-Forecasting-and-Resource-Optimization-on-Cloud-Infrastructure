@@ -143,4 +143,22 @@ Based on cloud resource forecasting requirements, the selected target variables 
   - `calculate_metrics()`, `print_metrics()`: Evaluation
   - `save_results()`, `compare_results()`: Results management
 
+# Current Status & Next Steps
 
+## Current
+- Forecasting: ARIMAX, SVR, Random Forest, Hybrid Prophet-LSTM (saved in `models/`).
+- Allocation baseline: `vm_resource_planner.py` (Linear Programming) → outputs `forecast_result/vm_schedule.csv`.
+- Clean data ready for simulation: `processed_data/cleaned_data.csv`, `normalization_stats.json`.
+- VM catalog: `VMs_type.json` (needs switching_cost fields if using DRL).
+
+## Planned DRL (PPO)
+- Add a DRL environment (Gym) to learn VM allocation.
+- Two scenarios to train/evaluate:
+  1) Minimize Resource Overload (CPU/RAM first)
+  2) Optimize Operational Cost (cost/switching first)
+- Compare DRL vs LP on:
+  - Total VMs used
+  - Resource utilization (CPU/RAM)
+  - Operational + switching cost, SLA violations
+
+See `DRL_UPDATE.md` for detailed steps, required new files, and testing instructions.
