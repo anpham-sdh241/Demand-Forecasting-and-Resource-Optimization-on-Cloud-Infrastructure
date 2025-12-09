@@ -1,3 +1,11 @@
 .venv/
 models/
 __pycache__/
+
+# DRL / PPO
+rl_models/*.zip
+rl_models/*.pkl
+rl_models/checkpoints_*/
+rl_models/best_*/
+rl_models/eval_logs_*/
+tensorboard_logs/

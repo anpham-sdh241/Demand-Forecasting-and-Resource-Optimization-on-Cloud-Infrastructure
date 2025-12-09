@@ -10,3 +10,9 @@ prophet==1.1.5
 cmdstanpy>=1.1.0
 torch==2.2.2
 scipy==1.11.4
+
+# Deep Reinforcement Learning (PPO for VM Allocation)
+gymnasium==0.29.1
+stable-baselines3==2.3.2
+tensorboard==2.15.1
+shimmy>=1.3.0

@@ -1,0 +1,6 @@
+# This directory stores trained PPO models
+# Models will be saved as:
+#   - ppo_overload.zip (Minimize Resource Overload scenario)
+#   - ppo_cost.zip (Optimize Operational Cost scenario)
+#   - ppo_*_vecnormalize.pkl (Normalization statistics)
+

@@ -149,16 +149,70 @@ Based on cloud resource forecasting requirements, the selected target variables 
 - Forecasting: ARIMAX, SVR, Random Forest, Hybrid Prophet-LSTM (saved in `models/`).
 - Allocation baseline: `vm_resource_planner.py` (Linear Programming) → outputs `forecast_result/vm_schedule.csv`.
 - Clean data ready for simulation: `processed_data/cleaned_data.csv`, `normalization_stats.json`.
-- VM catalog: `VMs_type.json` (needs switching_cost fields if using DRL).
+- VM catalog: `VMs_type.json` (includes `switching_cost` for DRL).
 
-## Planned DRL (PPO)
-- Add a DRL environment (Gym) to learn VM allocation.
-- Two scenarios to train/evaluate:
-  1) Minimize Resource Overload (CPU/RAM first)
-  2) Optimize Operational Cost (cost/switching first)
-- Compare DRL vs LP on:
-  - Total VMs used
-  - Resource utilization (CPU/RAM)
-  - Operational + switching cost, SLA violations
+## DRL (PPO) Implementation ✓
 
-See `DRL_UPDATE.md` for detailed steps, required new files, and testing instructions.
+The Deep Reinforcement Learning module for VM allocation has been implemented using PPO (Proximal Policy Optimization).
+
+### Files Structure
+
+**RL Module (`rl/`):**
+- `rl/__init__.py`: Module exports
+- `rl/config.py`: PPO hyperparameters and reward configurations
+- `rl/reward.py`: Reward function with 5 components (SLA, overflow, switching, VM cost, efficiency)
+- `rl/environment.py`: Gymnasium environment `VMAllocationEnv`
+- `rl/utils.py`: Utility functions for data loading, allocation parsing, evaluation
+
+**Training & Evaluation:**
+- `train_ppo.py`: Train PPO agents for two scenarios
+- `eval_ppo.py`: Evaluate trained models and compare with LP baseline
+- `rl_models/`: Directory for saved model checkpoints
+
+### Two Scenarios
+
+1. **Minimize Resource Overload** (`--scenario overload`)
+   - Prioritizes SLA compliance and resource availability
+   - Weights: α=1.0 (SLA), β=0.7 (overflow), γ=0.2 (switching), δ=0.1 (cost)
+
+2. **Optimize Operational Cost** (`--scenario cost`)
+   - Prioritizes minimizing operational and switching costs
+   - Weights: α=0.3 (SLA), β=0.2 (overflow), γ=0.5 (switching), δ=1.0 (cost)
+
+### Usage
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Train PPO (both scenarios)
+python train_ppo.py --scenario both --timesteps 500000
+
+# Train specific scenario
+python train_ppo.py --scenario overload --timesteps 500000
+python train_ppo.py --scenario cost --timesteps 500000
+
+# Evaluate and compare with LP baseline
+python eval_ppo.py --scenario both
+
+# Monitor training with TensorBoard
+tensorboard --logdir tensorboard_logs/
+```
+
+### Outputs
+
+- **Trained Models**: `rl_models/ppo_overload.zip`, `rl_models/ppo_cost.zip`
+- **PPO Schedules**: `forecast_result/ppo_schedule_test_<scenario>.csv`
+- **Comparison Report**: `forecast_result/ppo_vs_lp_comparison.json`
+
+### Comparison Metrics (DRL vs LP)
+
+| Metric | Description |
+|--------|-------------|
+| Total VM Cost | Sum of hourly VM costs |
+| Switching Cost | Cost of starting/stopping VMs |
+| SLA Violations | Steps where allocated < required |
+| CPU/Memory Utilization | Average resource utilization |
+| Total VMs Used | Sum/average of VMs per step |
+
+See `DRL_UPDATE.md` for detailed implementation plan and design decisions.
