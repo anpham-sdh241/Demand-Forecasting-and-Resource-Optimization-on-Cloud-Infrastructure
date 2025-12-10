@@ -69,6 +69,7 @@ class VMAllocationEnv(gym.Env):
         max_vms_per_type: int = MAX_VMS_PER_TYPE,
         random_start: bool = True,
         render_mode: Optional[str] = None,
+        forecast_cache: Optional[Dict[str, np.ndarray]] = None,
     ):
         """
         Initialize the VM Allocation Environment.
@@ -93,6 +94,7 @@ class VMAllocationEnv(gym.Env):
         self.random_start = random_start
         self.horizon = horizon
         self.max_vms_per_type = max_vms_per_type
+        self.forecast_cache = forecast_cache  # Optional precomputed forecasts per target
         
         # Load configurations
         self.ppo_config = ppo_config or PPOConfig()
@@ -178,8 +180,23 @@ class VMAllocationEnv(gym.Env):
         demand_features = np.array([cpu_req, mem_req, cpu_over, mem_over], dtype=np.float32)
         
         # Forecast features (3 × horizon)
-        forecasts = generate_forecasts_for_rl(self.data, idx, self.horizon)
-        forecast_features = forecasts.flatten()
+        if self.forecast_cache:
+            # Use cached model-based forecasts if available
+            fc_list = []
+            targets = ["cpu_total_usage", "memory_usage_pct", "system_load"]
+            for tgt in targets:
+                tgt_cache = self.forecast_cache.get(tgt)
+                if tgt_cache is not None and idx < len(tgt_cache):
+                    fc_vec = tgt_cache[idx]
+                else:
+                    # Fallback to zeros if out of range
+                    fc_vec = np.zeros(self.horizon, dtype=np.float32)
+                fc_list.append(fc_vec)
+            forecasts = np.stack(fc_list, axis=1)  # shape (horizon, 3)
+            forecast_features = forecasts.flatten()
+        else:
+            forecasts = generate_forecasts_for_rl(self.data, idx, self.horizon)
+            forecast_features = forecasts.flatten()
         
         # Current VM counts (n_vm_types)
         vm_features = np.array(
@@ -371,6 +388,7 @@ import pandas as pd
 def make_env(
     scenario: str = SCENARIO_OVERLOAD,
     is_training: bool = True,
+    use_model_forecast: bool = True,
     **kwargs,
 ) -> VMAllocationEnv:
     """
@@ -386,11 +404,25 @@ def make_env(
     """
     train_df, test_df = load_data()
     data = train_df if is_training else test_df
+
+    forecast_cache = None
+    if use_model_forecast and not is_training:
+        try:
+            from .utils import TARGET_MODEL_MAP, build_step_forecasts
+            forecast_cache = build_step_forecasts(
+                target_model_map=TARGET_MODEL_MAP,
+                horizon=kwargs.get("horizon", 12),
+                split="test",
+            )
+        except Exception as e:
+            print(f"Warning: model-based forecasts unavailable, falling back to perfect forecasts. Details: {e}")
+            forecast_cache = None
     
     return VMAllocationEnv(
         scenario=scenario,
         data=data,
         random_start=is_training,
+        forecast_cache=forecast_cache,
         **kwargs,
     )
 

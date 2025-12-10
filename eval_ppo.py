@@ -242,33 +242,60 @@ def rollout_ppo(
     df = pd.DataFrame(records)
     
     # Resample to 30-minute buckets to match LP outputs
+    if df.empty:
+        # Return empty DataFrames if no records
+        return df, pd.DataFrame()
+    
+    # Ensure timestamp column exists and is datetime
+    if "timestamp" not in df.columns:
+        df["timestamp"] = pd.date_range(start="2024-01-01", periods=len(df), freq="30S")
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     df = df.set_index("timestamp")
     
-    bucket = df.resample("30T").agg({
-        # Costs: sum within bucket
-        "vm_cost_per_hour": "sum",
-        "switching_cost": "sum",
-        "total_cost_per_hour": "sum",
-        # Demand/overflow: max within bucket
-        "cpu_required_cores": "max",
-        "mem_required_gb": "max",
-        "cpu_overflow_cores": "max",
-        "mem_overflow_gb": "max",
-        # Allocations (VM only): max to indicate provisioning level
-        "cpu_vm_only": "max",
-        "mem_vm_only": "max",
-        # SLA: sum violations and mean rate
-        "sla_violation_flag": ["sum", "mean"],
-    })
-    # Flatten MultiIndex columns
-    bucket.columns = [
-        "_".join(col).strip("_") if isinstance(col, tuple) else col for col in bucket.columns
+    # Check which columns exist before resampling
+    required_cols = [
+        "vm_cost_per_hour", "switching_cost", "total_cost_per_hour",
+        "cpu_required_cores", "mem_required_gb",
+        "cpu_overflow_cores", "mem_overflow_gb",
+        "cpu_vm_only", "mem_vm_only",
+        "sla_violation_flag"
     ]
+    
+    # Verify all required columns exist
+    missing_cols = [col for col in required_cols if col not in df.columns]
+    if missing_cols:
+        print(f"Warning: Missing columns in DataFrame: {missing_cols}")
+        print(f"Available columns: {list(df.columns)}")
+    
+    # Only aggregate columns that exist
+    agg_dict = {}
+    for col in required_cols:
+        if col in df.columns:
+            if col == "sla_violation_flag":
+                agg_dict[col] = ["sum", "mean"]
+            elif col in ["vm_cost_per_hour", "switching_cost", "total_cost_per_hour"]:
+                agg_dict[col] = "sum"
+            else:
+                agg_dict[col] = "max"
+    
+    if not agg_dict:
+        # No columns to aggregate, return empty bucket
+        print("Warning: No columns available for aggregation")
+        bucket = pd.DataFrame()
+    else:
+        bucket = df.resample("30T").agg(agg_dict)
+        
+        # Flatten MultiIndex columns if needed
+        if isinstance(bucket.columns, pd.MultiIndex):
+            bucket.columns = [
+                "_".join(col).strip("_") if isinstance(col, tuple) else col 
+                for col in bucket.columns
+            ]
     
     # Reset index for saving
     df = df.reset_index()
-    bucket = bucket.reset_index()
+    if not bucket.empty:
+        bucket = bucket.reset_index()
     
     return df, bucket
 
@@ -326,11 +353,11 @@ def compare_with_lp(
     if ppo_bucket_df is not None and not ppo_bucket_df.empty:
         # Columns after flatten: vm_cost_per_hour, switching_cost, total_cost_per_hour, sla_violation_flag_sum, sla_violation_flag_mean
         comparison["ppo_30min"] = {
-            "total_vm_cost": float(ppo_bucket_df["vm_cost_per_hour"].sum()),
-            "total_switching_cost": float(ppo_bucket_df["switching_cost"].sum()),
-            "total_cost": float(ppo_bucket_df["total_cost_per_hour"].sum()),
-            "sla_violations": int(ppo_bucket_df.get("sla_violation_flag_sum", 0)),
-            "sla_violation_rate": float(ppo_bucket_df.get("sla_violation_flag_mean", 0)),
+            "total_vm_cost": float(ppo_bucket_df["vm_cost_per_hour"].sum() if "vm_cost_per_hour" in ppo_bucket_df.columns else 0.0),
+            "total_switching_cost": float(ppo_bucket_df["switching_cost"].sum() if "switching_cost" in ppo_bucket_df.columns else 0.0),
+            "total_cost": float(ppo_bucket_df["total_cost_per_hour"].sum() if "total_cost_per_hour" in ppo_bucket_df.columns else 0.0),
+            "sla_violations": int(ppo_bucket_df["sla_violation_flag_sum"].sum() if "sla_violation_flag_sum" in ppo_bucket_df.columns else 0),
+            "sla_violation_rate": float(ppo_bucket_df["sla_violation_flag_mean"].mean() if "sla_violation_flag_mean" in ppo_bucket_df.columns else 0.0),
             "n_buckets": len(ppo_bucket_df),
         }
     

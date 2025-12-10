@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 
 from .config import DATA_CONFIG, HOST_SPEC, VM_TYPES_FILE
+from model_utils import get_latest_model, load_model
 
 
 def get_project_root() -> Path:
@@ -117,6 +118,75 @@ def load_normalization_stats(
         stats = json.load(f)
     
     return stats.get("targets", stats)
+
+
+# ---------------------------------------------------------------------------
+# Forecast utilities (per-target model loading)
+# ---------------------------------------------------------------------------
+
+# Default model mapping per target
+TARGET_MODEL_MAP: Dict[str, str] = {
+    "cpu_total_usage": "random_forest",
+    "memory_usage_pct": "svr",
+    "system_load": "random_forest",
+}
+
+
+def _load_split_xy(target: str, split: str = "test") -> Tuple[pd.Series, pd.DataFrame]:
+    """
+    Load X_split and y_split for a target from processed_data/<target>/.
+    """
+    base = get_project_root() / "processed_data" / target
+    if split not in ("train", "test"):
+        raise ValueError("split must be 'train' or 'test'")
+    y_path = base / f"y_{split}.csv"
+    x_path = base / f"X_{split}.csv"
+    if not y_path.exists() or not x_path.exists():
+        raise FileNotFoundError(f"Missing processed data for target={target}, split={split}")
+    y_split = pd.read_csv(y_path).squeeze()
+    X_split = pd.read_csv(x_path)
+    return y_split, X_split
+
+
+def _predict_one_step_series(model, X_split: pd.DataFrame) -> np.ndarray:
+    """
+    One-step-ahead prediction for each row in X_split.
+    """
+    preds = model.predict(X_split)
+    return np.asarray(preds).flatten()
+
+
+def build_step_forecasts(
+    target_model_map: Dict[str, str],
+    horizon: int,
+    split: str = "test",
+) -> Dict[str, np.ndarray]:
+    """
+    Build per-step forecasts for each target using specified models.
+    Each step's forecast is a vector of length `horizon` (broadcasted from 1-step prediction).
+
+    Returns:
+        Dict[target] -> np.ndarray shape (n_steps, horizon)
+    """
+    forecast_cache: Dict[str, np.ndarray] = {}
+
+    for target, model_name in target_model_map.items():
+        # Load data
+        y_split, X_split = _load_split_xy(target, split)
+        n_steps = len(X_split)
+
+        # Load latest model for this target/model_name
+        model_path = get_latest_model(models_dir="models", model_name=model_name, target=target)
+        model, _meta = load_model(model_path)
+
+        # One-step predictions for each row
+        step_preds = _predict_one_step_series(model, X_split)
+
+        # Broadcast each one-step pred to horizon
+        fc_mat = np.repeat(step_preds[:, None], horizon, axis=1)
+        forecast_cache[target] = fc_mat
+
+    return forecast_cache
 
 
 def compute_resource_requirements(
