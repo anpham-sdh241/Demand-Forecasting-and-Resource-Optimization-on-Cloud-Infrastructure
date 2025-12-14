@@ -23,7 +23,7 @@ from __future__ import annotations
 import json
 import argparse
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -32,6 +32,7 @@ from torch import nn
 from scipy.optimize import linprog
 
 from model_utils import get_latest_model, load_model, save_results
+from rl.reward import compute_switching_cost, compute_vm_cost
 
 # -----------------------------------------------------------------------------
 # Configuration
@@ -55,6 +56,7 @@ SUPPORTED_MODELS = {
 DEFAULT_MODEL_NAME = "hybrid_prophet_lstm"
 SERIES_FREQ = "30S"
 START_TIMESTAMP = pd.Timestamp("2024-01-01 00:00:00")
+STEP_HOURS = pd.to_timedelta(SERIES_FREQ).total_seconds() / 3600.0
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -179,6 +181,34 @@ def load_latest_models(model_name: str) -> Dict[str, Path]:
             )
         )
     return model_paths
+
+
+def load_ground_truth_df() -> pd.DataFrame:
+    """
+    Build a DataFrame that mimics a streaming ground-truth feed using y_test of all targets.
+
+    Returns:
+        DataFrame with columns: timestamp, memory_usage_pct, cpu_total_usage, system_load
+    """
+    records: Dict[str, np.ndarray] = {}
+    timestamps = None
+
+    for target in TARGETS:
+        _y_train, y_test = load_series(target)
+        records[target] = y_test.values
+        if timestamps is None:
+            time_index = pd.date_range(
+                start=START_TIMESTAMP, periods=len(y_test), freq=SERIES_FREQ
+            )
+            timestamps = time_index
+
+    if timestamps is None:
+        raise RuntimeError("No ground truth available.")
+
+    df = pd.DataFrame({"timestamp": timestamps})
+    for target in TARGETS:
+        df[target] = records[target]
+    return df
 
 
 def generate_forecasts(
@@ -572,33 +602,177 @@ def build_schedule(
     return schedule_df
 
 
+def build_reactive_schedule(
+    requirements_df: pd.DataFrame,
+    vm_catalog: List[Dict[str, Any]],
+) -> pd.DataFrame:
+    """
+    Solve LP per timestamp (reactive, no look-ahead). This mimics streaming decisions
+    where only the current measurement is known.
+    """
+    records = []
+    prev_alloc: Dict[str, int] = {}
+    vm_catalog_map = {vm["name"]: vm for vm in vm_catalog}
+
+    for _, row in requirements_df.iterrows():
+        cpu_req = float(row["cpu_overflow_cores"])
+        mem_req = float(row["memory_overflow_gb"])
+
+        if cpu_req <= 0 and mem_req <= 0:
+            records.append(
+                {
+                    "timestamp": row["timestamp"],
+                    "cpu_overflow_cores": cpu_req,
+                    "memory_overflow_gb": mem_req,
+                    "min_overload_plan": "Host only",
+                    "min_overload_cost_per_hour": 0.0,
+                    "min_cost_plan": "Host only",
+                    "min_cost_cost_per_hour": 0.0,
+                    "vm_plan": "Host only",
+                    "vm_total_count": 0,
+                    "vm_cost_per_hour": 0.0,
+                    "vm_cost_per_step": 0.0,
+                    "switching_cost": 0.0,
+                    "total_cost_per_hour": 0.0,
+                    "total_cost_per_step": 0.0,
+                    "vm_cpu_allocated": 0.0,
+                    "vm_mem_allocated": 0.0,
+                    "sla_violation": 0,
+                    "cpu_utilization_pct": 0.0,
+                    "mem_utilization_pct": 0.0,
+                }
+            )
+            prev_alloc = {}
+            continue
+
+        overload_plan = solve_vm_allocation(
+            cpu_req,
+            mem_req,
+            vm_catalog,
+            objective="capacity",
+            cpu_weight=1.0,
+            mem_weight=0.5,
+        )
+        cost_plan = solve_vm_allocation(
+            cpu_req,
+            mem_req,
+            vm_catalog,
+            objective="cost",
+        )
+
+        # Choose cost-first plan as enacted allocation
+        allocation = cost_plan["allocation"]
+        vm_cpu = cost_plan["total_cpu"]
+        vm_mem = cost_plan["total_memory"]
+        vm_cost = cost_plan["total_cost"]
+        vm_count = int(sum(allocation.values()))
+
+        switch_cost = compute_switching_cost(prev_alloc, allocation, vm_catalog_map)
+        total_cost = vm_cost + switch_cost
+        vm_cost_step = vm_cost * STEP_HOURS  # convert $/h to $/step
+        total_cost_step = total_cost * STEP_HOURS + switch_cost  # switching is one-time at step
+
+        cpu_util = min(100.0, (cpu_req / vm_cpu * 100.0)) if vm_cpu > 0 else (100.0 if cpu_req > 0 else 0.0)
+        mem_util = min(100.0, (mem_req / vm_mem * 100.0)) if vm_mem > 0 else (100.0 if mem_req > 0 else 0.0)
+        sla_violation = int(vm_cpu < cpu_req or vm_mem < mem_req)
+
+        records.append(
+            {
+                "timestamp": row["timestamp"],
+                "cpu_overflow_cores": cpu_req,
+                "memory_overflow_gb": mem_req,
+                "min_overload_plan": format_allocation(overload_plan["allocation"]),
+                "min_overload_cost_per_hour": overload_plan["total_cost"],
+                "min_cost_plan": format_allocation(cost_plan["allocation"]),
+                "min_cost_cost_per_hour": cost_plan["total_cost"],
+                "vm_plan": format_allocation(allocation),
+                "vm_total_count": vm_count,
+                "vm_cost_per_hour": vm_cost,
+                "switching_cost": switch_cost,
+                "total_cost_per_hour": total_cost,
+                "vm_cost_per_step": vm_cost_step,
+                "total_cost_per_step": total_cost_step,
+                "vm_cpu_allocated": vm_cpu,
+                "vm_mem_allocated": vm_mem,
+                "sla_violation": sla_violation,
+                "cpu_utilization_pct": cpu_util,
+                "mem_utilization_pct": mem_util,
+            }
+        )
+        prev_alloc = allocation
+
+    return pd.DataFrame(records)
+
+
+def compute_lp_metrics(schedule_df: pd.DataFrame) -> Dict[str, Any]:
+    """
+    Aggregate LP results over the full test horizon.
+    """
+    if schedule_df.empty:
+        return {
+            "total_vm_cost": 0.0,  # $/h aggregated as hours in series freq
+            "total_switching_cost": 0.0,
+            "total_cost": 0.0,
+            "total_cost_step": 0.0,
+            "total_vms_sum": 0,
+            "avg_vms": 0.0,
+            "mean_cpu_utilization_pct": 0.0,
+            "mean_mem_utilization_pct": 0.0,
+            "sla_violations": 0,
+            "sla_violation_rate": 0.0,
+        }
+
+    total_vm_cost = float(schedule_df["vm_cost_per_hour"].sum()) if "vm_cost_per_hour" in schedule_df else 0.0
+    total_switching_cost = float(schedule_df["switching_cost"].sum()) if "switching_cost" in schedule_df else 0.0
+    total_cost = float(schedule_df["total_cost_per_hour"].sum()) if "total_cost_per_hour" in schedule_df else total_vm_cost + total_switching_cost
+    total_cost_step = float(schedule_df["total_cost_per_step"].sum()) if "total_cost_per_step" in schedule_df else 0.0
+
+    total_vms_sum = int(schedule_df["vm_total_count"].sum()) if "vm_total_count" in schedule_df else 0
+    avg_vms = float(schedule_df["vm_total_count"].mean()) if "vm_total_count" in schedule_df else 0.0
+
+    mean_cpu_util = float(schedule_df["cpu_utilization_pct"].mean()) if "cpu_utilization_pct" in schedule_df else 0.0
+    mean_mem_util = float(schedule_df["mem_utilization_pct"].mean()) if "mem_utilization_pct" in schedule_df else 0.0
+
+    sla_violations = int(schedule_df["sla_violation"].sum()) if "sla_violation" in schedule_df else 0
+    sla_violation_rate = float(schedule_df["sla_violation"].mean()) if "sla_violation" in schedule_df else 0.0
+
+    return {
+        "total_vm_cost": total_vm_cost,
+        "total_switching_cost": total_switching_cost,
+        "total_cost": total_cost,
+        "total_cost_step": total_cost_step,
+        "total_vms_sum": total_vms_sum,
+        "avg_vms": avg_vms,
+        "mean_cpu_utilization_pct": mean_cpu_util,
+        "mean_mem_utilization_pct": mean_mem_util,
+        "sla_violations": sla_violations,
+        "sla_violation_rate": sla_violation_rate,
+    }
+
+
 # -----------------------------------------------------------------------------
 # Main execution
 # -----------------------------------------------------------------------------
 
-def run_planner(model_name: str):
-    print("=== VM Resource Planner ===")
+def run_planner(model_name: str = "unused", mode: str = "reactive"):
+    """
+    Reactive-only planner: uses ground-truth y_test as a streaming feed.
+    Forecast-based planning is intentionally removed for LP in this mode.
+    """
+    print("=== VM Resource Planner (Reactive, no forecast) ===")
     print(f"Device: {DEVICE}")
-    print(f"Model: {model_name}")
+    print("Mode: reactive (uses y_test streaming; model arg ignored)")
 
     vm_catalog = load_vm_catalog(VM_TYPES_FILE)
-    model_paths = load_latest_models(model_name)
-    forecast_df = generate_forecasts(model_paths, model_name)
-    
-    # Display forecast statistics for verification
-    print("\n=== Forecast Statistics (Original Scale) ===")
-    for target in TARGETS:
-        if target in forecast_df.columns:
-            vals = forecast_df[target]
-            print(f"  {target}: min={vals.min():.4f}, max={vals.max():.4f}, mean={vals.mean():.4f}")
-
-    requirements_df = convert_forecasts_to_requirements(forecast_df, HOST_SPEC)
+    data_df = load_ground_truth_df()
+    requirements_df = convert_forecasts_to_requirements(data_df, HOST_SPEC)
     peak_summary = summarize_peak_plans(requirements_df, vm_catalog)
-    schedule_df = build_schedule(requirements_df, vm_catalog)
+    schedule_df = build_reactive_schedule(requirements_df, vm_catalog)
+    metrics = compute_lp_metrics(schedule_df)
 
     # Persist outputs
     plan_payload = {
-        "model": "vm_resource_planner",
+        "model": "vm_resource_planner_reactive",
         "timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
         "host_spec": HOST_SPEC,
         "peak_requirements": {
@@ -609,29 +783,32 @@ def run_planner(model_name: str):
             "minimize_overload": peak_summary["minimize_overload_plan"],
             "minimize_cost": peak_summary["minimize_cost_plan"],
         },
+        "metrics": metrics,
         "schedule": schedule_df.to_dict(orient="records"),
     }
 
-    results_path = RESULTS_DIR / "vm_resource_planning.json"
+    results_path = RESULTS_DIR / "vm_resource_planning_reactive.json"
     schedule_records = schedule_df.copy()
-    schedule_records["timestamp"] = schedule_records["timestamp"].dt.strftime(
+    schedule_records["timestamp"] = pd.to_datetime(schedule_records["timestamp"]).dt.strftime(
         "%Y-%m-%d %H:%M:%S"
     )
     plan_payload["schedule"] = schedule_records.to_dict(orient="records")
     save_results(plan_payload, str(results_path))
 
-    schedule_csv = RESULTS_DIR / "vm_schedule.csv"
+    schedule_csv = RESULTS_DIR / "vm_schedule_reactive.csv"
     schedule_df.to_csv(schedule_csv, index=False)
 
-    print("\n=== Summary ===")
+    print("\n=== Summary (Reactive LP) ===")
     print(f"Peak CPU overflow (cores): {peak_summary['peak_cpu_overflow']:.2f}")
     print(f"Peak Memory overflow (GB): {peak_summary['peak_memory_overflow']:.2f}")
-    print("\nScenario: Minimize Resource Overload")
-    print(f"  Allocation: {format_allocation(peak_summary['minimize_overload_plan']['allocation'])}")
-    print(f"  Total cost $/h: {peak_summary['minimize_overload_plan']['total_cost']:.4f}")
-    print("\nScenario: Optimize Operational Cost")
-    print(f"  Allocation: {format_allocation(peak_summary['minimize_cost_plan']['allocation'])}")
-    print(f"  Total cost $/h: {peak_summary['minimize_cost_plan']['total_cost']:.4f}")
+    print(f"Total VM cost ($/h summed): {metrics['total_vm_cost']:.4f}")
+    print(f"Total switching cost: {metrics['total_switching_cost']:.4f}")
+    print(f"Total cost ($/h summed): {metrics['total_cost']:.4f}")
+    print(f"Total cost ($ over series): {metrics['total_cost_step']:.4f}")
+    print(f"Total VMs (sum over steps): {metrics['total_vms_sum']}")
+    print(f"Avg CPU util %: {metrics['mean_cpu_utilization_pct']:.2f}")
+    print(f"Avg Mem util %: {metrics['mean_mem_utilization_pct']:.2f}")
+    print(f"SLA violations: {metrics['sla_violations']} (rate {metrics['sla_violation_rate']*100:.2f}%)")
     print(f"\n✓ JSON report: {results_path}")
     print(f"✓ Schedule CSV: {schedule_csv}")
 
@@ -639,12 +816,12 @@ def run_planner(model_name: str):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="VM Resource Planner")
     parser.add_argument(
-        "--model",
-        choices=list(SUPPORTED_MODELS.keys()),
-        default=DEFAULT_MODEL_NAME,
-        help="Model name to use for forecasting.",
+        "--mode",
+        choices=["reactive"],
+        default="reactive",
+        help="Reactive only: use ground-truth y_test as streaming feed (no forecast).",
     )
     args = parser.parse_args()
-    run_planner(args.model)
+    run_planner(mode=args.mode)
 
 
