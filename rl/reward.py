@@ -172,44 +172,52 @@ def compute_efficiency_bonus(
         mem_allocated: Allocated memory in GB from VMs
         
     Returns:
-        Efficiency bonus (-0.5 to 1.0)
+        Efficiency bonus (-1.0 to 1.0)
     """
-    # If no overflow, no VMs needed - give small bonus for not over-provisioning
+    # If no overflow, no VMs needed - give bonus for not over-provisioning
     if cpu_overflow <= 0 and mem_overflow <= 0:
         if cpu_allocated <= 0 and mem_allocated <= 0:
-            return 0.5  # Good: no overflow, no VMs
+            return 1.0  # Perfect: no overflow, no VMs
         else:
-            return 0.0  # Neutral: no overflow but VMs allocated (slight waste)
+            # Penalty proportional to over-provision amount
+            waste = cpu_allocated + mem_allocated
+            return -0.5 * min(waste, 2.0)  # Cap penalty at -1.0
     
     # If overflow but no VMs allocated, penalty
     if cpu_allocated <= 0 and mem_allocated <= 0:
-        return -0.5  # Bad: overflow but no VMs
+        return -1.0  # Bad: overflow but no VMs
     
     # Calculate utilization percentages (how well VMs cover the overflow)
     cpu_util = (cpu_overflow / cpu_allocated * 100) if cpu_allocated > 0 else 0
     mem_util = (mem_overflow / mem_allocated * 100) if mem_allocated > 0 else 0
     
-    # Bonus for high utilization (80-95% is optimal)
+    # Bonus for high utilization (70-100% is good, 80-95% is optimal)
     cpu_bonus = 0.0
     mem_bonus = 0.0
     
     if 80 <= cpu_util <= 95:
         cpu_bonus = 1.0
     elif 70 <= cpu_util < 80 or 95 < cpu_util <= 100:
-        cpu_bonus = 0.5
+        cpu_bonus = 0.7
+    elif 50 <= cpu_util < 70:
+        cpu_bonus = 0.3
     elif cpu_util > 100:
         cpu_bonus = -0.5  # Penalty for under-provisioning (shortage)
     elif cpu_util < 50:
-        cpu_bonus = -0.25  # Slight penalty for over-provisioning
+        # Stronger penalty for heavy over-provisioning
+        cpu_bonus = -0.5 * (1 - cpu_util / 50)  # -0.5 at 0%, -0.25 at 25%
     
     if 80 <= mem_util <= 95:
         mem_bonus = 1.0
     elif 70 <= mem_util < 80 or 95 < mem_util <= 100:
-        mem_bonus = 0.5
+        mem_bonus = 0.7
+    elif 50 <= mem_util < 70:
+        mem_bonus = 0.3
     elif mem_util > 100:
         mem_bonus = -0.5  # Penalty for under-provisioning (shortage)
     elif mem_util < 50:
-        mem_bonus = -0.25  # Slight penalty for over-provisioning
+        # Stronger penalty for heavy over-provisioning
+        mem_bonus = -0.5 * (1 - mem_util / 50)
     
     return (cpu_bonus + mem_bonus) / 2
 

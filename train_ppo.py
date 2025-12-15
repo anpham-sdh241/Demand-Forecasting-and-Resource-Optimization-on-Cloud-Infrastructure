@@ -113,7 +113,12 @@ def train_ppo(
     
     # Create training environments
     def make_train_env():
-        env = make_env(scenario=scenario, is_training=True)
+        env = make_env(
+            scenario=scenario,
+            is_training=True,
+            episode_length=config.episode_length,
+            horizon=config.horizon,
+        )
         env = Monitor(env)
         return env
     
@@ -122,7 +127,12 @@ def train_ppo(
     
     # Create evaluation environment
     def make_eval_env():
-        env = make_env(scenario=scenario, is_training=False)
+        env = make_env(
+            scenario=scenario,
+            is_training=False,
+            episode_length=config.episode_length,
+            horizon=config.horizon,
+        )
         env = Monitor(env)
         return env
     

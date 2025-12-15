@@ -8,19 +8,70 @@ Mục tiêu: tìm horizon H tốt nhất cho từng model (SVR, Random Forest, A
 - Horizon cần thử (gợi ý, bước 30s): `HORIZONS = [6, 12, 18, 24, 30, 36]`  → 3, 6, 9, 12, 15, 18 phút.
 
 ## 2. Ý tưởng đánh giá H
-Tại mỗi vị trí start `s` trên tập test:
-- Giả sử đang ở thời điểm `s`, biết toàn bộ lịch sử trước đó (train + phần test trước `s`).
-- Forecast H bước tới → lấy giá trị ở bước H: `y_hat(s+H)`.
-- So sánh với `y_true(s+H)`.
-Lặp cho nhiều `s` (đến hết test trừ H) → tính MAE/RMSE/R² riêng cho horizon H. Lặp cho mọi H trong `HORIZONS`.
+### 2.1 Rolling-origin (walk-forward) đúng nghĩa cho horizon H
+Mục tiêu của “forecast H bước tới” là:
+- Đứng tại thời điểm **t** (start), chỉ dùng thông tin “có sẵn tại t” (và lịch sử trước đó).
+- Dự báo giá trị mục tiêu tại **t+H** (hoặc **t+H-1** nếu bạn đếm H là số bước, bắt đầu từ t+1).
+- Lặp t = t0, t0+1, t0+2… cho đến khi **không còn đủ H bước** trong tập test.
+
+Bạn mô tả như sau là **đúng** về mặt ý tưởng:
+- Ở t, generate một dải dự báo \(t+1, t+2, \dots, t+H\) (multi-step path).
+- Sau đó dịch sang t+1, chỉ cần quan tâm giá trị ở **điểm cuối** mới \(t+H+1\) (nếu mục tiêu là đánh giá “H-step ahead” tại mỗi start).
+- Các điểm forecast “lố” qua cuối tập test thì **không tính vào metric**.
+
+### 2.2 Hai cách chấm điểm phổ biến (đừng nhầm)
+**A) Chấm đúng “H-step ahead” (chỉ lấy điểm cuối):**
+- Với mỗi start t, bạn forecast H bước, nhưng **chỉ lấy dự báo ở bước H**:
+  - \( \hat{y}_{t+H} \) (hoặc \( \hat{y}_{t+H-1} \) tùy quy ước chỉ số)
+- So sánh với \( y_{t+H} \) tương ứng.
+- Đây là cách dùng để trả lời câu hỏi: “dự báo xa H bước thì sai số thế nào?”
+
+**B) Chấm toàn bộ đường dự báo (multi-step path):**
+- Với mỗi start t, bạn lấy cả vector dự báo \(\hat{y}_{t+1..t+H}\)
+- Và có thể tính metric theo từng step k=1..H, hoặc gộp tất cả.
+- Cách này trả lời câu hỏi: “sai số tăng dần theo từng bước trong 1 rollout ra sao?”
+
+Notebook hiện tại đang hướng tới **(A)** (đánh giá riêng từng H).
+
+### 2.3 Pseudocode (chuẩn, dễ đối chiếu code)
+Giả sử test có N điểm, chỉ số 0..N-1, và H là “số bước ahead”, thì:
+
+```python
+# start t chạy tới khi t+H không vượt N-1
+for t in range(0, N - H):
+    # tạo dự báo H bước: y_hat[t+1], ..., y_hat[t+H]
+    path = forecast_from_t(t, steps=H)
+    y_pred.append(path[-1])        # chỉ lấy bước cuối (H-step)
+    y_true.append(y_test[t + H])   # so với ground truth cùng thời điểm
+```
+
+Nếu bạn dùng quy ước “bước cuối là t+H-1” (như notebook hiện tại đang dùng `target_idx = t + H - 1`) thì thay `t+H` bằng `t+H-1` cho nhất quán.
 
 ## 3. Hàm rolling forecast (khái niệm)
 - **ARIMAX**: dùng `rolling_forecast` / `forecast_with_horizon` trong `model_utils.py` (đã có).
-- **SVR / Random Forest** (recursive):
-  - Giữ một bản sao feature tại thời điểm `s` (có chứa lag/time features).
-  - Dự đoán liên tiếp từng bước, sau mỗi bước cập nhật các cột lag bằng giá trị vừa dự đoán.
-  - Sau H bước, lấy giá trị cuối cùng làm `y_hat(s+H)`.
-- **Hybrid Prophet+LSTM**: tương tự ARIMAX, giữ state residual và dự báo nối tiếp H bước.
+### 3.1 ARIMAX (multi-step path → lấy điểm cuối)
+- Với mỗi start t: gọi `model.forecast(steps=H, exog=...)` để ra vector dự báo H bước.
+- Lấy phần tử cuối làm dự báo “H-step ahead”.
+
+### 3.2 SVR / Random Forest: cần phân biệt “eval đúng” và “mô hình có support multi-step hay không”
+**Trường hợp bạn muốn đúng như mô tả (generate t+1..t+H, rồi trượt cửa sổ):**
+- Bạn cần feature set có **lag của y** (và/hoặc time features) để sau mỗi bước có thể “cập nhật state” và dự báo bước tiếp theo (recursive).
+- Pseudocode (recursive) sẽ giống:
+  - lấy feature tại t,
+  - dự đoán \(\hat{y}_{t+1}\),
+  - cập nhật các cột lag bằng \(\hat{y}_{t+1}\),
+  - dự đoán \(\hat{y}_{t+2}\), … đến \(\hat{y}_{t+H}\).
+
+**Nếu feature set KHÔNG có lag của y** (như dataset hiện tại), thì SVR/RF *không thể* tự “roll” ra t+1..t+H một cách hợp lệ chỉ từ X[t].
+Trong trường hợp này bạn có 2 lựa chọn:
+- **(i) Re-train theo từng H (direct model):** train mapping `X[t] -> y[t+H]` cho mỗi H, rồi đánh giá.
+- **(ii) Chấp nhận “oracle future features” (không khuyến nghị cho bài toán vận hành):**
+  dùng `X[t+H]` để dự đoán `y[t+H]`. Cách này thường làm metric “đẹp” vì vô tình dùng thông tin tương lai (nhiều feature thực tế không biết trước).
+
+### 3.3 Hybrid Prophet+LSTM
+- Prophet dự báo trend/seasonality theo thời gian.
+- LSTM dự báo residual theo kiểu recursive.
+- Lấy điểm cuối trong path H bước để chấm “H-step ahead”, hoặc chấm toàn bộ path nếu cần.
 
 ## 4. Quy trình chạy trong notebook mới
 1) Load data + models (dùng `get_latest_model`).
@@ -55,6 +106,8 @@ Lặp cho nhiều `s` (đến hết test trừ H) → tính MAE/RMSE/R² riêng 
 
 ## 7. Lưu ý
 - Không cần re-ETL. Dùng đúng train/test đã có; test là chuỗi nối tiếp train.
-- Với SVR/RF, cần đảm bảo cập nhật đúng các cột lag khi forecast nhiều bước (recursive). Nếu feature set không có lag, xem xét bổ sung lag trong ETL cho phiên bản đánh giá H.
+- Với SVR/RF, muốn forecast nhiều bước đúng nghĩa (recursive) thì **bắt buộc** có lag của y (hoặc state tương đương). Nếu feature set không có lag, hãy:
+  - bổ sung lag trong ETL, hoặc
+  - train direct model riêng cho từng H.
 - Thời gian chạy: tăng theo số H và số điểm test; cân nhắc giảm `HORIZONS` khi thử nhanh.
 

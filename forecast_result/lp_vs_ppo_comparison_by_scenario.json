@@ -1,0 +1,83 @@
+{
+  "timestamp": "2025-12-16 00:26:48",
+  "comparison_type": "per-step by scenario",
+  "n_steps": 17150,
+  "scenarios": {
+    "overload": {
+      "LP": {
+        "Method": "LP",
+        "Steps": 17150,
+        "Total VMs": 2738,
+        "Avg VMs/Step": 0.16,
+        "Max VMs": 1,
+        "Steps with VMs": 2738,
+        "CPU Util %": 5.6,
+        "Mem Util %": 0.0,
+        "Total Cost ($/h)": 4205.568,
+        "Avg Cost/Step": 0.2452,
+        "SLA Violations": 0
+      },
+      "PPO": {
+        "Method": "PPO",
+        "Steps": 17150,
+        "Total VMs": 4780,
+        "Avg VMs/Step": 0.279,
+        "Max VMs": 34,
+        "Steps with VMs": 345,
+        "CPU Util %": 2.02,
+        "Mem Util %": 0.0,
+        "Total Cost ($/h)": 1288.7008,
+        "Avg Cost/Step": 0.0751,
+        "SLA Violations": 49
+      },
+      "winner": {
+        "scenario": "OVERLOAD",
+        "vm": "LP",
+        "util": "LP",
+        "cost": "PPO",
+        "sla": "LP"
+      }
+    },
+    "cost": {
+      "LP": {
+        "Method": "LP",
+        "Steps": 17150,
+        "Total VMs": 4015,
+        "Avg VMs/Step": 0.234,
+        "Max VMs": 7,
+        "Steps with VMs": 2738,
+        "CPU Util %": 53.62,
+        "Mem Util %": 0.0,
+        "Total Cost ($/h)": 167.024,
+        "Avg Cost/Step": 0.0097,
+        "SLA Violations": 0
+      },
+      "PPO": {
+        "Method": "PPO",
+        "Steps": 17150,
+        "Total VMs": 4597,
+        "Avg VMs/Step": 0.268,
+        "Max VMs": 37,
+        "Steps with VMs": 394,
+        "CPU Util %": 2.92,
+        "Mem Util %": 0.0,
+        "Total Cost ($/h)": 713.7088,
+        "Avg Cost/Step": 0.0416,
+        "SLA Violations": 0
+      },
+      "winner": {
+        "scenario": "COST",
+        "vm": "LP",
+        "util": "LP",
+        "cost": "LP",
+        "sla": "LP"
+      }
+    }
+  },
+  "overall_best": {
+    "vm_count": "LP (Overload)",
+    "utilization": "LP (Cost)",
+    "cost": "LP (Cost)",
+    "sla": "LP (Overload)"
+  }
+}

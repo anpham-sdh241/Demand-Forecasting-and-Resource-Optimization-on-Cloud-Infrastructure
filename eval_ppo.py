@@ -50,12 +50,16 @@ LP_SCHEDULE_PATH = RESULTS_DIR / "vm_schedule.csv"
 RESULTS_DIR.mkdir(exist_ok=True)
 
 
-def load_ppo_model(scenario: str) -> tuple[PPO, Optional[VecNormalize]]:
+def load_ppo_model(
+    scenario: str,
+    episode_length: Optional[int] = None,
+) -> tuple[PPO, Optional[VecNormalize]]:
     """
     Load trained PPO model and VecNormalize statistics.
     
     Args:
         scenario: Scenario name
+        episode_length: Optional episode length override
         
     Returns:
         Tuple of (model, vec_normalize)
@@ -76,13 +80,21 @@ def load_ppo_model(scenario: str) -> tuple[PPO, Optional[VecNormalize]]:
     vec_normalize = None
     if vec_normalize_path.exists():
         # Create a dummy env to attach VecNormalize
+        # NOTE: Do NOT pass horizon - let env use default to match trained model
         def make_dummy_env():
-            return make_env(scenario=scenario, is_training=False)
+            env_kwargs = {}
+            if episode_length is not None:
+                env_kwargs["episode_length"] = episode_length
+            return make_env(scenario=scenario, is_training=False, **env_kwargs)
         
         env = DummyVecEnv([make_dummy_env])
-        vec_normalize = VecNormalize.load(str(vec_normalize_path), env)
-        vec_normalize.training = False
-        vec_normalize.norm_reward = False
+        try:
+            vec_normalize = VecNormalize.load(str(vec_normalize_path), env)
+            vec_normalize.training = False
+            vec_normalize.norm_reward = False
+        except AssertionError as e:
+            print(f"Warning: VecNormalize shape mismatch, skipping normalization. Details: {e}")
+            vec_normalize = None
     
     return model, vec_normalize
 
@@ -91,6 +103,7 @@ def rollout_ppo(
     model: PPO,
     scenario: str,
     vec_normalize: Optional[VecNormalize] = None,
+    episode_length: Optional[int] = None,
 ) -> pd.DataFrame:
     """
     Run PPO model on test data and collect results.
@@ -99,6 +112,7 @@ def rollout_ppo(
         model: Trained PPO model
         scenario: Scenario name
         vec_normalize: VecNormalize for observation normalization
+        episode_length: Number of steps to evaluate (None = use default from config)
         
     Returns:
         DataFrame with PPO allocations and metrics
@@ -110,13 +124,13 @@ def rollout_ppo(
     vm_catalog = load_vm_catalog()
     vm_types = list(vm_catalog.keys())
     
-    # Create test environment
-    # NOTE:
-    # - make_env(..., is_training=False) đã tự động đặt random_start=False
-    #   khi khởi tạo VMAllocationEnv.
-    # - Không truyền random_start lần thứ hai để tránh lỗi
-    #   "got multiple values for keyword argument 'random_start'".
-    env = make_env(scenario=scenario, is_training=False)
+    # Create test environment with optional custom episode_length
+    # NOTE: Do NOT pass horizon - let env use default to match trained model
+    env_kwargs = {}
+    if episode_length is not None:
+        env_kwargs["episode_length"] = episode_length
+    
+    env = make_env(scenario=scenario, is_training=False, **env_kwargs)
     
     # Wrap with VecNormalize if available
     if vec_normalize is not None:
@@ -389,12 +403,16 @@ def compare_with_lp(
     return comparison
 
 
-def evaluate_scenario(scenario: str) -> Dict[str, Any]:
+def evaluate_scenario(
+    scenario: str,
+    episode_length: Optional[int] = None,
+) -> Dict[str, Any]:
     """
     Full evaluation pipeline for a scenario.
     
     Args:
         scenario: Scenario name
+        episode_length: Number of steps to evaluate (None = use default 480)
         
     Returns:
         Evaluation results dictionary
@@ -405,11 +423,16 @@ def evaluate_scenario(scenario: str) -> Dict[str, Any]:
     
     try:
         # Load model
-        model, vec_normalize = load_ppo_model(scenario)
+        model, vec_normalize = load_ppo_model(scenario, episode_length=episode_length)
         print(f"Loaded model from {MODELS_DIR / f'ppo_{scenario}.zip'}")
         
         # Run PPO rollout
-        ppo_df, ppo_bucket = rollout_ppo(model, scenario, vec_normalize)
+        ppo_df, ppo_bucket = rollout_ppo(
+            model,
+            scenario,
+            vec_normalize,
+            episode_length=episode_length,
+        )
         
         # Save PPO schedule (per-step) and bucketed 30min
         ppo_schedule_path = RESULTS_DIR / f"ppo_schedule_test_{scenario}.csv"
@@ -479,6 +502,12 @@ def main():
         help="Scenario to evaluate",
     )
     parser.add_argument(
+        "--episode-length",
+        type=int,
+        default=None,
+        help="Number of steps to evaluate (default: env config)",
+    )
+    parser.add_argument(
         "--output",
         type=str,
         default=None,
@@ -500,7 +529,10 @@ def main():
     all_comparisons = []
     
     for scenario in scenarios:
-        comparison = evaluate_scenario(scenario)
+        comparison = evaluate_scenario(
+            scenario,
+            episode_length=args.episode_length,
+        )
         all_comparisons.append(comparison)
         print_comparison(comparison)
     

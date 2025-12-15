@@ -1,0 +1,39 @@
+{
+  "model": "vm_resource_planner_notebook_reactive",
+  "host_spec": {
+    "total_cpu_cores": 1,
+    "total_memory_gb": 4,
+    "cpu_threshold_pct": 70,
+    "memory_threshold_pct": 75
+  },
+  "scenarios": {
+    "overload": {
+      "metrics": {
+        "total_vm_cost": 4205.568,
+        "total_switching_cost": 112.7,
+        "total_cost": 4318.268,
+        "total_cost_step": 148.6855666666667,
+        "total_vms_sum": 2738,
+        "avg_vms": 0.15965014577259476,
+        "mean_cpu_utilization_pct": 0.8948371160095208,
+        "mean_mem_utilization_pct": 0.0,
+        "sla_violations": 0,
+        "sla_violation_rate": 0.0
+      }
+    },
+    "cost": {
+      "metrics": {
+        "total_vm_cost": 167.02399999999997,
+        "total_switching_cost": 24.73,
+        "total_cost": 191.754,
+        "total_cost_step": 26.32795,
+        "total_vms_sum": 4015,
+        "avg_vms": 0.23411078717201167,
+        "mean_cpu_utilization_pct": 8.56099155045171,
+        "mean_mem_utilization_pct": 0.0,
+        "sla_violations": 0,
+        "sla_violation_rate": 0.0
+      }
+    }
+  }
+}

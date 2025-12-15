@@ -38,8 +38,9 @@ class RewardConfig:
     overflow_penalty_per_core: float = 5.0  # Penalty per core overflow
     overflow_penalty_per_gb: float = 2.5    # Penalty per GB overflow
     # Over-provision penalty (when overflow=0 but VMs>0)
-    overprov_penalty_per_vcpu: float = 0.05
-    overprov_penalty_per_gb: float = 0.01
+    # Higher values discourage allocating VMs when host can handle demand
+    overprov_penalty_per_vcpu: float = 0.5   # Strong penalty per vCPU when no overflow
+    overprov_penalty_per_gb: float = 0.2     # Strong penalty per GB when no overflow
     
     @classmethod
     def overload_scenario(cls) -> "RewardConfig":
@@ -90,10 +91,10 @@ class PPOConfig:
     episode_length: int = 480     # 480 steps = 4 giờ mô phỏng
     
     # horizon = số bước forecast phía trước
-    #   - 9 phút = 9 × 60 / 30 = 18 steps
-    #   - 12 phút = 12 × 60 / 30 = 24 steps
-    #   - 6 phút = 6 × 60 / 30 = 12 steps
-    horizon: int = 18             # 18 steps × 30s = 9 phút forecast
+    #   - 9 phút  = 9  × 60 / 30 = 18 steps
+    #   - 30 phút = 30 × 60 / 30 = 60 steps
+    #   - 60 phút = 60 × 60 / 30 = 120 steps
+    horizon: int = 120           # 120 steps × 30s = 60 phút forecast
     
     # Training duration
     total_timesteps: int = 1_000_000

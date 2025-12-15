@@ -430,6 +430,7 @@ def load_vm_catalog(vm_file: Path) -> List[Dict[str, Any]]:
                 "vcpus": spec["vcpus"],
                 "memory_gb": spec["memory_gb"],
                 "cost_per_hour": spec["cost_per_hour"],
+                "switching_cost": spec.get("switching_cost", 0.0),  # Include switching cost
             }
         )
     catalog.sort(key=lambda item: item["cost_per_hour"])
@@ -444,6 +445,13 @@ def solve_vm_allocation(
     cpu_weight: float = 1.0,
     mem_weight: float = 0.25,
 ) -> Dict[str, Any]:
+    """
+    Solve VM allocation using Linear Programming.
+    
+    Objectives:
+    - "cost": Minimize total cost (prefer cheapest VMs)
+    - "capacity": Minimize cost per capacity unit (prefer VMs with better cost-effectiveness)
+    """
     cpu_req = max(0.0, float(cpu_req))
     mem_req = max(0.0, float(mem_req))
 
@@ -458,12 +466,17 @@ def solve_vm_allocation(
 
     num_vm = len(vm_catalog)
     if objective == "cost":
+        # Minimize pure cost → prefers cheapest VMs
         c = [vm["cost_per_hour"] for vm in vm_catalog]
     else:
-        c = [
-            cpu_weight * vm["vcpus"] + mem_weight * vm["memory_gb"]
-            for vm in vm_catalog
-        ]
+        # Minimize cost per capacity → prefers VMs with better $/capacity ratio
+        # Lower ratio = better value for capacity
+        # This makes larger VMs more attractive when they're cost-effective
+        c = []
+        for vm in vm_catalog:
+            capacity = cpu_weight * vm["vcpus"] + mem_weight * vm["memory_gb"]
+            cost_per_capacity = vm["cost_per_hour"] / capacity if capacity > 0 else float('inf')
+            c.append(cost_per_capacity)
 
     A_ub = [
         [-vm["vcpus"] for vm in vm_catalog],

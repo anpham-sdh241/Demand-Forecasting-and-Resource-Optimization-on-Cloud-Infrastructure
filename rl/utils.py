@@ -358,12 +358,13 @@ def format_allocation(vm_allocation: Dict[str, int]) -> str:
         vm_allocation: VM allocation {vm_type: count}
         
     Returns:
-        Formatted string like "B2s×1, D2s_v3×2"
+        Formatted string like "B2s:1, D2s_v3:2"
     """
     if not vm_allocation or all(v == 0 for v in vm_allocation.values()):
         return "No VMs"
     
-    parts = [f"{vm}×{count}" for vm, count in vm_allocation.items() if count > 0]
+    # Use ':' instead of '×' to avoid encoding issues in CSV
+    parts = [f"{vm}:{count}" for vm, count in vm_allocation.items() if count > 0]
     return ", ".join(parts)
 
 
