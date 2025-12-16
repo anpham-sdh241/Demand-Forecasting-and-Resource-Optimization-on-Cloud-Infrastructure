@@ -53,6 +53,7 @@ RESULTS_DIR.mkdir(exist_ok=True)
 def load_ppo_model(
     scenario: str,
     episode_length: Optional[int] = None,
+    horizon: Optional[int] = None,
 ) -> tuple[PPO, Optional[VecNormalize]]:
     """
     Load trained PPO model and VecNormalize statistics.
@@ -80,11 +81,12 @@ def load_ppo_model(
     vec_normalize = None
     if vec_normalize_path.exists():
         # Create a dummy env to attach VecNormalize
-        # NOTE: Do NOT pass horizon - let env use default to match trained model
         def make_dummy_env():
             env_kwargs = {}
             if episode_length is not None:
                 env_kwargs["episode_length"] = episode_length
+            if horizon is not None:
+                env_kwargs["horizon"] = horizon
             return make_env(scenario=scenario, is_training=False, **env_kwargs)
         
         env = DummyVecEnv([make_dummy_env])
@@ -104,6 +106,7 @@ def rollout_ppo(
     scenario: str,
     vec_normalize: Optional[VecNormalize] = None,
     episode_length: Optional[int] = None,
+    horizon: Optional[int] = None,
 ) -> pd.DataFrame:
     """
     Run PPO model on test data and collect results.
@@ -124,11 +127,12 @@ def rollout_ppo(
     vm_catalog = load_vm_catalog()
     vm_types = list(vm_catalog.keys())
     
-    # Create test environment with optional custom episode_length
-    # NOTE: Do NOT pass horizon - let env use default to match trained model
+    # Create test environment with optional custom episode_length/horizon
     env_kwargs = {}
     if episode_length is not None:
         env_kwargs["episode_length"] = episode_length
+    if horizon is not None:
+        env_kwargs["horizon"] = horizon
     
     env = make_env(scenario=scenario, is_training=False, **env_kwargs)
     
@@ -406,6 +410,7 @@ def compare_with_lp(
 def evaluate_scenario(
     scenario: str,
     episode_length: Optional[int] = None,
+    horizon: Optional[int] = None,
 ) -> Dict[str, Any]:
     """
     Full evaluation pipeline for a scenario.
@@ -423,7 +428,11 @@ def evaluate_scenario(
     
     try:
         # Load model
-        model, vec_normalize = load_ppo_model(scenario, episode_length=episode_length)
+        model, vec_normalize = load_ppo_model(
+            scenario,
+            episode_length=episode_length,
+            horizon=horizon,
+        )
         print(f"Loaded model from {MODELS_DIR / f'ppo_{scenario}.zip'}")
         
         # Run PPO rollout
@@ -432,6 +441,7 @@ def evaluate_scenario(
             scenario,
             vec_normalize,
             episode_length=episode_length,
+            horizon=horizon,
         )
         
         # Save PPO schedule (per-step) and bucketed 30min
@@ -508,6 +518,12 @@ def main():
         help="Number of steps to evaluate (default: env config)",
     )
     parser.add_argument(
+        "--horizon",
+        type=int,
+        default=None,
+        help="Forecast horizon in steps (default: env config)",
+    )
+    parser.add_argument(
         "--output",
         type=str,
         default=None,
@@ -532,6 +548,7 @@ def main():
         comparison = evaluate_scenario(
             scenario,
             episode_length=args.episode_length,
+            horizon=args.horizon,
         )
         all_comparisons.append(comparison)
         print_comparison(comparison)
