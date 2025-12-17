@@ -214,9 +214,12 @@ def rollout_ppo(
         sla_violated = (cpu_alloc_total < cpu_req) or (mem_alloc_total < mem_req)
         
         # Create record (before host-only postprocess)
+        # If PPO allocates 0 VMs → "Host only" (user can check sla_violation_flag for details)
+        alloc_label = format_allocation(allocation, no_vm_label="Host only")
+        
         record = {
             "timestamp": row.get("datetime", step),
-            "allocation": format_allocation(allocation),
+            "allocation": alloc_label,
             "vm_cost_per_hour": vm_cost,
             "switching_cost": switch_cost,
             "total_cost_per_hour": vm_cost + switch_cost,
@@ -243,6 +246,7 @@ def rollout_ppo(
             record["mem_allocated_gb"] = mem_threshold
             record["cpu_vm_only"] = 0.0
             record["mem_vm_only"] = 0.0
+        
         records.append(record)
         
         prev_allocation = allocation.copy()

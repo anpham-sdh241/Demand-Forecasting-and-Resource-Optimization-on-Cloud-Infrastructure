@@ -6,13 +6,24 @@ This script trains PPO agents for two scenarios:
 1. Minimize Resource Overload (overload-first)
 2. Optimize Operational Cost (cost-first)
 
+Default Config (from rl/config.py):
+    - episode_length: 2880 (24 hours - daily pattern)
+    - total_timesteps: 5,000,000 (1,736 episodes)
+    - horizon: 120 (60 minutes forecast)
+
 Usage:
-    python train_ppo.py --scenario overload --timesteps 500000
-    python train_ppo.py --scenario cost --timesteps 500000
-    python train_ppo.py --scenario both --timesteps 500000
+    # Train with default config (recommended)
+    python train_ppo.py --scenario both --n-envs 8
+    
+    # Train with custom timesteps
+    python train_ppo.py --scenario both --timesteps 10000000 --n-envs 8
+    
+    # Quick test (fewer timesteps)
+    python train_ppo.py --scenario overload --timesteps 100000 --n-envs 4
 
 Outputs:
     - Trained models: rl_models/ppo_overload.zip, rl_models/ppo_cost.zip
+    - VecNormalize: rl_models/ppo_*_vecnormalize.pkl
     - TensorBoard logs: tensorboard_logs/
 """
 
@@ -216,8 +227,8 @@ def main():
     parser.add_argument(
         "--n-envs",
         type=int,
-        default=4,
-        help="Number of parallel environments",
+        default=8,
+        help="Number of parallel environments (default: 8)",
     )
     parser.add_argument(
         "--continue",
@@ -235,7 +246,13 @@ def main():
         "--episode-length",
         type=int,
         default=None,
-        help="Override episode length",
+        help="Override episode length (default: 2880 = 24 hours)",
+    )
+    parser.add_argument(
+        "--horizon",
+        type=int,
+        default=None,
+        help="Override forecast horizon (default: 120 = 60 minutes)",
     )
     
     args = parser.parse_args()
@@ -248,16 +265,29 @@ def main():
         config.learning_rate = args.learning_rate
     if args.episode_length:
         config.episode_length = args.episode_length
+    if args.horizon:
+        config.horizon = args.horizon
+    
+    # Calculate training statistics
+    n_episodes = config.total_timesteps // config.episode_length
+    n_updates = config.total_timesteps // (args.n_envs * config.n_steps)
+    episode_hours = config.episode_length * 30 / 3600  # 30 seconds per step
     
     print("="*60)
     print("PPO Training for VM Allocation")
     print("="*60)
-    print(f"Scenario(s): {args.scenario}")
-    print(f"Total timesteps: {config.total_timesteps:,}")
-    print(f"Parallel envs: {args.n_envs}")
-    print(f"Episode length: {config.episode_length}")
-    print(f"Learning rate: {config.learning_rate}")
-    print(f"Continue training: {args.continue_training}")
+    print(f"\n📋 SCENARIO: {args.scenario.upper()}")
+    print(f"\n⚙️  TRAINING CONFIG:")
+    print(f"   • Total timesteps:  {config.total_timesteps:,}")
+    print(f"   • Episode length:   {config.episode_length} steps ({episode_hours:.0f} hours)")
+    print(f"   • Horizon:          {config.horizon} steps ({config.horizon * 30 / 60:.0f} minutes)")
+    print(f"   • Parallel envs:    {args.n_envs}")
+    print(f"   • Learning rate:    {config.learning_rate}")
+    print(f"\n📊 EXPECTED:")
+    print(f"   • Episodes:         ~{n_episodes:,}")
+    print(f"   • Policy updates:   ~{n_updates:,}")
+    print(f"   • Training time:    ~{config.total_timesteps / 1_000_000 * 30:.0f}-{config.total_timesteps / 1_000_000 * 60:.0f} minutes")
+    print(f"\n🔄 Continue training: {args.continue_training}")
     print("="*60)
     
     scenarios = []
@@ -276,12 +306,19 @@ def main():
         )
     
     print("\n" + "="*60)
-    print("Training Complete!")
+    print("✅ Training Complete!")
     print("="*60)
-    print(f"Models saved in: {MODELS_DIR}")
-    print(f"TensorBoard logs: {TENSORBOARD_DIR}")
-    print("\nTo view TensorBoard:")
-    print(f"  tensorboard --logdir {TENSORBOARD_DIR}")
+    print(f"\n📁 OUTPUT FILES:")
+    print(f"   • Models:      {MODELS_DIR}/ppo_*.zip")
+    print(f"   • VecNormalize: {MODELS_DIR}/ppo_*_vecnormalize.pkl")
+    print(f"   • TensorBoard: {TENSORBOARD_DIR}/")
+    print(f"\n🔍 NEXT STEPS:")
+    print(f"   1. View training curves:")
+    print(f"      tensorboard --logdir {TENSORBOARD_DIR}")
+    print(f"\n   2. Evaluate on full test set:")
+    print(f"      python eval_ppo.py --scenario both --episode-length 17150")
+    print(f"\n   3. Compare with LP baseline:")
+    print(f"      jupyter notebook lp_vs_ppo_comparison.ipynb")
 
 
 if __name__ == "__main__":

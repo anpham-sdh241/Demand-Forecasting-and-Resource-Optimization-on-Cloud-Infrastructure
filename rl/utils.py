@@ -350,18 +350,19 @@ def parse_allocation_string(allocation_str: str) -> Dict[str, int]:
     return allocation
 
 
-def format_allocation(vm_allocation: Dict[str, int]) -> str:
+def format_allocation(vm_allocation: Dict[str, int], no_vm_label: str = "No VMs") -> str:
     """
     Format VM allocation dictionary to string.
     
     Args:
         vm_allocation: VM allocation {vm_type: count}
+        no_vm_label: Label to use when no VMs allocated
         
     Returns:
         Formatted string like "B2s:1, D2s_v3:2"
     """
     if not vm_allocation or all(v == 0 for v in vm_allocation.values()):
-        return "No VMs"
+        return no_vm_label
     
     # Use ':' instead of '×' to avoid encoding issues in CSV
     parts = [f"{vm}:{count}" for vm, count in vm_allocation.items() if count > 0]

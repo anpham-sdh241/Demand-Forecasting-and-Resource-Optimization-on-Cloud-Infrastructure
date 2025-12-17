@@ -44,24 +44,34 @@ class RewardConfig:
     
     @classmethod
     def overload_scenario(cls) -> "RewardConfig":
-        """Scenario 1: Minimize Resource Overload (CPU/RAM priority)"""
+        """Scenario 1: Minimize Resource Overload (CPU/RAM priority)
+        
+        Changes from original:
+        - Increased delta (VM cost) to reduce over-provisioning
+        - Increased epsilon (efficiency bonus) to encourage right-sizing
+        """
         return cls(
             alpha=1.0,
             beta=0.7,
             gamma=0.2,
-            delta=0.1,
-            epsilon=0.1,
+            delta=0.5,      # Increased from 0.1 → penalize over-provisioning
+            epsilon=0.3,    # Increased from 0.1 → reward efficiency
         )
     
     @classmethod
     def cost_scenario(cls) -> "RewardConfig":
-        """Scenario 2: Optimize Operational Cost (cost/switching priority)"""
+        """Scenario 2: Optimize Operational Cost (cost/switching priority)
+        
+        Changes from original:
+        - Increased alpha (SLA penalty) to prevent violations
+        - Increased epsilon (efficiency bonus)
+        """
         return cls(
-            alpha=0.3,
-            beta=0.2,
+            alpha=1.0,      # Increased from 0.3 → stronger SLA penalty
+            beta=0.3,       # Increased from 0.2
             gamma=0.8,
             delta=2.0,
-            epsilon=0.1,
+            epsilon=0.3,    # Increased from 0.1 → reward efficiency
         )
 
 
@@ -85,10 +95,11 @@ class PPOConfig:
     # Environment parameters
     # Data sampling: every 30 seconds
     # episode_length = số bước trong 1 episode
-    #   - 2880 steps × 30s = 24 giờ (1 ngày)
-    #   - 1440 steps × 30s = 12 giờ
-    #   - 480 steps × 30s = 4 giờ
-    episode_length: int = 480     # 480 steps = 4 giờ mô phỏng
+    #   - 2880 steps × 30s = 24 giờ (1 ngày) ← nếu có daily pattern
+    #   - 1440 steps × 30s = 12 giờ ← BALANCED (half daily cycle)
+    #   - 480 steps × 30s = 4 giờ ← fast training
+    # Trade-off: shorter = more episodes, faster; longer = learns daily patterns
+    episode_length: int = 1440    # 1440 steps = 12 giờ (balanced)
     
     # horizon = số bước forecast phía trước
     #   - 9 phút  = 9  × 60 / 30 = 18 steps
@@ -97,7 +108,11 @@ class PPOConfig:
     horizon: int = 120           # 120 steps × 30s = 60 phút forecast
     
     # Training duration
-    total_timesteps: int = 1_000_000
+    # Với episode_length = 1440 (12 giờ):
+    #   - 1M = 694 episodes (quick test)
+    #   - 2M = 1,388 episodes (recommended)
+    #   - 5M = 3,472 episodes (best quality)
+    total_timesteps: int = 2_000_000
     
     # Logging
     tensorboard_log: str = "./tensorboard_logs/"
