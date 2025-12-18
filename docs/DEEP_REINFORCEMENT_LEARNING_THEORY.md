@@ -20,272 +20,167 @@ Trong bài toán phân bổ tài nguyên và lập lịch lại (rescheduling), 
 
 Reinforcement Learning được mô hình hóa dưới dạng **Markov Decision Process (MDP)**, bao gồm 5 thành phần:
 
-**MDP = (S, A, P, R, γ)**
+$$\text{MDP} = (S, A, P, R, \gamma)$$
 
 Trong đó:
 - **S**: State space (Không gian trạng thái) - Tập hợp tất cả các trạng thái có thể của môi trường
 - **A**: Action space (Không gian hành động) - Tập hợp tất cả các hành động agent có thể thực hiện
-- **P**: Transition probability (Xác suất chuyển trạng thái) - P(s'|s,a) là xác suất chuyển từ trạng thái s sang s' khi thực hiện hành động a
-- **R**: Reward function (Hàm phần thưởng) - R(s,a,s') là phần thưởng nhận được khi chuyển từ s sang s' bằng hành động a
-- **γ**: Discount factor (Hệ số chiết khấu) - γ ∈ [0,1], điều chỉnh tầm quan trọng của phần thưởng tương lai
+- **P**: Transition probability (Xác suất chuyển trạng thái) - $P(s'|s,a)$ là xác suất chuyển từ trạng thái $s$ sang $s'$ khi thực hiện hành động $a$
+- **R**: Reward function (Hàm phần thưởng) - $R(s,a,s')$ là phần thưởng nhận được khi chuyển từ $s$ sang $s'$ bằng hành động $a$
+- **γ**: Discount factor (Hệ số chiết khấu) - $\gamma \in [0,1]$, điều chỉnh tầm quan trọng của phần thưởng tương lai
 
 ### 2.2. Các Khái Niệm Cơ Bản
 
-**Policy (Chính sách)**: π(a|s)
-- Xác định xác suất chọn hành động a khi ở trạng thái s
-- Mục tiêu là tìm policy tối ưu π* để tối đa hóa tổng phần thưởng kỳ vọng
+**Policy (Chính sách)**: $\pi(a|s)$
+- Xác định xác suất chọn hành động $a$ khi ở trạng thái $s$
+- Mục tiêu là tìm policy tối ưu $\pi^*$ để tối đa hóa tổng phần thưởng kỳ vọng
 
 **Value Function (Hàm giá trị)**:
-- **State Value V^π(s)**: Giá trị kỳ vọng của tổng phần thưởng khi bắt đầu từ trạng thái s và theo policy π
-  ```
-  V^π(s) = E_π[Σ_{t=0}^∞ γ^t R_{t+1} | S_0 = s]
-  ```
-- **Action Value Q^π(s,a)**: Giá trị kỳ vọng khi thực hiện hành động a ở trạng thái s và sau đó theo policy π
-  ```
-  Q^π(s,a) = E_π[Σ_{t=0}^∞ γ^t R_{t+1} | S_0 = s, A_0 = a]
-  ```
+- **State Value $V^{\pi}(s)$**: Giá trị kỳ vọng của tổng phần thưởng khi bắt đầu từ trạng thái $s$ và theo policy $\pi$
+  $$V^{\pi}(s) = \mathbb{E}_{\pi}\left[\sum_{t=0}^{\infty} \gamma^t R_{t+1} \mid S_0 = s\right]$$
+- **Action Value $Q^{\pi}(s,a)$**: Giá trị kỳ vọng khi thực hiện hành động $a$ ở trạng thái $s$ và sau đó theo policy $\pi$
+  $$Q^{\pi}(s,a) = \mathbb{E}_{\pi}\left[\sum_{t=0}^{\infty} \gamma^t R_{t+1} \mid S_0 = s, A_0 = a\right]$$
 
 **Bellman Equation**:
 - Phương trình đệ quy mô tả mối quan hệ giữa giá trị của trạng thái hiện tại và các trạng thái tiếp theo
-- **Bellman Equation cho V^π**:
-  ```
-  V^π(s) = Σ_a π(a|s) Σ_{s'} P(s'|s,a) [R(s,a,s') + γV^π(s')]
-  ```
-- **Bellman Equation cho Q^π**:
-  ```
-  Q^π(s,a) = Σ_{s'} P(s'|s,a) [R(s,a,s') + γ Σ_{a'} π(a'|s') Q^π(s',a')]
-  ```
+- **Bellman Equation cho $V^{\pi}$**:
+  $$V^{\pi}(s) = \sum_a \pi(a|s) \sum_{s'} P(s'|s,a) \left[R(s,a,s') + \gamma V^{\pi}(s')\right]$$
+- **Bellman Equation cho $Q^{\pi}$**:
+  $$Q^{\pi}(s,a) = \sum_{s'} P(s'|s,a) \left[R(s,a,s') + \gamma \sum_{a'} \pi(a'|s') Q^{\pi}(s',a')\right]$$
 
-**Optimal Policy (Chính sách tối ưu)**: π*
+**Optimal Policy (Chính sách tối ưu)**: $\pi^*$
 - Policy tối ưu là policy có giá trị lớn nhất ở mọi trạng thái
-- V^π*(s) ≥ V^π(s) với mọi s và mọi policy π
+- $V^{\pi^*}(s) \geq V^{\pi}(s)$ với mọi $s$ và mọi policy $\pi$
 
 ### 2.3. Mục Tiêu của Reinforcement Learning
 
-Mục tiêu của RL là tìm policy tối ưu π* để tối đa hóa **expected return** (tổng phần thưởng kỳ vọng):
+Mục tiêu của RL là tìm policy tối ưu $\pi^*$ để tối đa hóa **expected return** (tổng phần thưởng kỳ vọng):
 
-```
-J(π) = E_π[Σ_{t=0}^∞ γ^t R_{t+1}]
-```
+$$J(\pi) = \mathbb{E}_{\pi}\left[\sum_{t=0}^{\infty} \gamma^t R_{t+1}\right]$$
 
 Trong đó:
-- R_t là phần thưởng tại thời điểm t
-- γ là discount factor
-- E_π là kỳ vọng theo policy π
+- $R_t$ là phần thưởng tại thời điểm $t$
+- $\gamma$ là discount factor
+- $\mathbb{E}_{\pi}$ là kỳ vọng theo policy $\pi$
 
 ## 3. Mô Hình Hóa Bài Toán Allocation/Rescheduling
 
 ### 3.1. Đặc Điểm của Bài Toán
 
-Bài toán phân bổ tài nguyên và lập lịch lại có các đặc điểm chính:
+Bài toán phân bổ tài nguyên và lập lịch lại được mô hình hóa trong framework MDP với các đặc điểm chính:
 
-1. **Sequential Decision Making**: 
-   - Quyết định tại mỗi timestep phụ thuộc vào trạng thái hiện tại
-   - Ảnh hưởng đến các quyết định tương lai
-   - Cần tối ưu hóa tổng chi phí qua nhiều bước thời gian
+- **Sequential Decision Making**: Quyết định tại mỗi timestep phụ thuộc vào trạng thái hiện tại và ảnh hưởng đến các quyết định tương lai, yêu cầu tối ưu hóa tổng chi phí qua nhiều bước thời gian.
 
-2. **Long-term Optimization**:
-   - Agent cần học cách cân bằng giữa chi phí ngắn hạn và dài hạn
-   - Switching cost tạo ra dependencies giữa các quyết định
-   - Discount factor γ điều chỉnh tầm quan trọng của tương lai
+- **Long-term Optimization**: Agent cần cân bằng giữa chi phí ngắn hạn và dài hạn, đặc biệt khi switching cost tạo ra dependencies giữa các quyết định.
 
-3. **Multi-objective**:
-   - Cần cân bằng nhiều mục tiêu mâu thuẫn:
-     - Resource availability vs Cost
-     - Switching cost vs Operational cost
-     - Efficiency vs Safety margin
-   - Reward function cho phép điều chỉnh trade-off này
+- **Multi-objective**: Cần cân bằng nhiều mục tiêu mâu thuẫn (resource availability vs cost, switching cost vs operational cost) thông qua reward function.
 
-4. **Uncertainty**:
-   - Nhu cầu tài nguyên không chắc chắn
-   - Forecast có thể không chính xác
-   - Agent cần học cách xử lý uncertainty này
-
-5. **State Space Complexity**:
-   - State space lớn và phức tạp
-   - Cần deep neural networks để học representation hiệu quả
-   - Có thể bao gồm: current demand, forecast, current allocation, time features
+- **Uncertainty**: Nhu cầu tài nguyên và forecast không chắc chắn, agent cần học cách xử lý uncertainty này.
 
 ### 3.2. State Space (Không Gian Trạng Thái)
 
-Trong bài toán Allocation/Rescheduling, state thường bao gồm:
+State trong bài toán Allocation/Rescheduling bao gồm:
 
-**1. Current Demand (Nhu cầu hiện tại)**:
-- Nhu cầu tài nguyên hiện tại
-- Overflow (nếu có) khi nhu cầu vượt quá capacity
-
-**2. Forecast Information (Thông tin dự báo)**:
-- Dự báo nhu cầu cho các bước thời gian tiếp theo
-- Giúp agent nhìn xa về tương lai để đưa ra quyết định tốt hơn
-
-**3. Current Allocation (Phân bổ hiện tại)**:
-- Trạng thái phân bổ tài nguyên hiện tại
-- Quan trọng để tính switching cost khi thay đổi allocation
-
-**4. Time Features (Đặc trưng thời gian)**:
-- Thông tin về thời gian (giờ, ngày, tuần)
-- Giúp agent học được temporal patterns (daily/weekly cycles)
+- **Current Demand**: Nhu cầu tài nguyên hiện tại và overflow (nếu có)
+- **Forecast Information**: Dự báo nhu cầu cho các bước thời gian tiếp theo
+- **Current Allocation**: Trạng thái phân bổ hiện tại (quan trọng để tính switching cost)
+- **Time Features**: Thông tin thời gian (giờ, ngày, tuần) để học temporal patterns
 
 ### 3.3. Action Space (Không Gian Hành Động)
 
-Action trong bài toán Allocation/Rescheduling thường là:
+Action space là **MultiDiscrete**, mỗi action là một vector xác định số lượng tài nguyên phân bổ cho từng loại. Agent có thể:
+- Giữ nguyên allocation để tránh switching cost
+- Thay đổi allocation để đáp ứng nhu cầu mới hoặc giảm chi phí
 
-- **Discrete actions**: Số lượng tài nguyên cần phân bổ cho từng loại
-- **MultiDiscrete space**: Mỗi thành phần là discrete và độc lập
-- Agent quyết định allocation mới dựa trên state hiện tại
-
-**Rescheduling Actions**:
-- Agent có thể quyết định giữ nguyên allocation để tránh switching cost
-- Hoặc thay đổi allocation để đáp ứng nhu cầu mới hoặc giảm chi phí
-- Quyết định này phụ thuộc vào trade-off giữa switching cost và operational cost
+Quyết định phụ thuộc vào trade-off giữa switching cost và operational cost.
 
 ### 3.4. Reward Function (Hàm Phần Thưởng)
 
-Reward function trong bài toán Allocation/Rescheduling thường bao gồm:
+Reward function bao gồm ba thành phần chính:
 
-**1. Performance Metrics**:
-- Phần thưởng/phạt dựa trên việc đáp ứng nhu cầu
-- Penalty khi vi phạm SLA hoặc không đáp ứng đủ tài nguyên
+- **Performance Metrics**: Phần thưởng/phạt dựa trên việc đáp ứng nhu cầu, penalty khi vi phạm SLA
+- **Cost Components**: Operational cost (chi phí vận hành) và switching cost (chi phí chuyển đổi)
+- **Efficiency Metrics**: Utilization và right-sizing của tài nguyên
 
-**2. Cost Components**:
-- Operational cost: Chi phí vận hành tài nguyên
-- Switching cost: Chi phí chuyển đổi giữa các cấu hình
-- Tối thiểu hóa tổng chi phí
-
-**3. Efficiency Metrics**:
-- Utilization: Sử dụng hiệu quả tài nguyên đã allocate
-- Right-sizing: Phân bổ đúng lượng cần thiết
-
-**Reward Shaping**:
-- Thiết kế reward function là một nghệ thuật, ảnh hưởng lớn đến behavior của agent
-- Cần cân bằng các thành phần để đạt được mục tiêu mong muốn
-- Reward shaping không đúng có thể dẫn đến behavior không mong muốn
+Thiết kế reward function là yếu tố quan trọng, cần cân bằng các thành phần để đạt được mục tiêu mong muốn.
 
 ## 4. Phương Pháp Giải: Proximal Policy Optimization (PPO)
 
 ### 4.1. Giới Thiệu về PPO
 
-**Proximal Policy Optimization (PPO)** là thuật toán policy gradient được đề xuất bởi OpenAI vào năm 2017. PPO là một cải tiến của Trust Region Policy Optimization (TRPO), đơn giản hơn để triển khai nhưng vẫn giữ được tính ổn định trong quá trình training. [[3]](https://arxiv.org/abs/1707.06347)
-
-**Tại sao chọn PPO?**
-- **Stable Training**: Tránh được policy update quá lớn gây mất ổn định
-- **Sample Efficient**: Sử dụng dữ liệu hiệu quả hơn so với các phương pháp on-policy khác
+**Proximal Policy Optimization (PPO)** là thuật toán policy gradient được đề xuất bởi OpenAI vào năm 2017, là cải tiến của TRPO với cách triển khai đơn giản hơn nhưng vẫn giữ được tính ổn định. [[3]](https://arxiv.org/abs/1707.06347) PPO được chọn vì:
+- **Stable Training**: Tránh policy update quá lớn gây mất ổn định
+- **Sample Efficient**: Sử dụng dữ liệu hiệu quả hơn các phương pháp on-policy khác
 - **Easy to Implement**: Đơn giản hơn TRPO nhưng vẫn hiệu quả
-- **Widely Used**: Được sử dụng rộng rãi và có nhiều implementation sẵn có
 
 ### 4.2. Nguyên Lý Cơ Bản
 
 PPO thuộc nhóm **Policy Gradient** methods, tối ưu hóa policy trực tiếp bằng cách:
-
 1. Thu thập samples từ policy hiện tại
 2. Tính toán advantage estimates
 3. Cập nhật policy để tăng xác suất các hành động tốt và giảm xác suất các hành động xấu
 
 **Policy Gradient Objective**:
-```
-L^PG(θ) = E_t [log π_θ(a_t|s_t) × A_t]
-```
+$$L^{PG}(\theta) = \mathbb{E}_t \left[\log \pi_{\theta}(a_t|s_t) \times A_t\right]$$
 
-Trong đó:
-- π_θ(a_t|s_t) là xác suất chọn hành động a_t ở trạng thái s_t theo policy θ
-- A_t là advantage estimate (độ lợi của hành động so với baseline)
+Trong đó $\pi_{\theta}(a_t|s_t)$ là xác suất chọn hành động $a_t$ ở trạng thái $s_t$, và $A_t$ là advantage estimate.
 
 ### 4.3. Clipped Objective của PPO
 
 PPO sử dụng **clipped objective** để tránh policy update quá lớn:
 
-```
-L^CLIP(θ) = E_t [min(
-    r_t(θ) × A_t,
-    clip(r_t(θ), 1-ε, 1+ε) × A_t
-)]
-```
+$$L^{CLIP}(\theta) = \mathbb{E}_t \left[\min\left(
+    r_t(\theta) \times A_t,
+    \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon) \times A_t
+\right)\right]$$
 
-Trong đó:
-- **r_t(θ)**: Importance sampling ratio = π_θ(a_t|s_t) / π_θ_old(a_t|s_t)
-- **ε**: Clip range (thường là 0.1 hoặc 0.2)
-- **A_t**: Advantage estimate
-
-**Cơ chế hoạt động**:
-- Nếu advantage A_t > 0 (hành động tốt): Tăng xác suất hành động, nhưng giới hạn bởi (1+ε)
-- Nếu advantage A_t < 0 (hành động xấu): Giảm xác suất hành động, nhưng giới hạn bởi (1-ε)
-- Điều này ngăn policy thay đổi quá nhanh, giữ training ổn định
+Trong đó $r_t(\theta) = \frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}$ là importance sampling ratio, và $\epsilon$ là clip range (thường 0.1-0.2). Cơ chế này giới hạn độ lớn của policy update, giữ training ổn định.
 
 ### 4.4. Advantage Estimation
 
 PPO sử dụng **Generalized Advantage Estimation (GAE)** để ước lượng advantage:
 
-```
-A_t = δ_t + (γλ)δ_{t+1} + (γλ)²δ_{t+2} + ...
-```
+$$A_t = \delta_t + (\gamma\lambda)\delta_{t+1} + (\gamma\lambda)^2\delta_{t+2} + \cdots$$
 
-Trong đó:
-- **δ_t**: TD error = r_t + γV(s_{t+1}) - V(s_t)
-- **γ**: Discount factor
-- **λ**: GAE parameter (thường là 0.95)
-
-GAE kết hợp giữa Monte Carlo (λ=1) và TD learning (λ=0), giảm variance trong khi vẫn giữ bias thấp.
+Trong đó $\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)$ là TD error, $\gamma$ là discount factor, và $\lambda$ là GAE parameter (thường 0.95). GAE kết hợp Monte Carlo và TD learning, giảm variance trong khi vẫn giữ bias thấp.
 
 ### 4.5. Thuật Toán PPO
 
-**Input**: 
-- Initial policy parameters θ₀
-- Initial value function parameters φ₀
+Thuật toán PPO hoạt động theo chu kỳ lặp lại, mỗi vòng lặp (iteration) bao gồm 4 bước chính:
+
+**Input**: Khởi tạo các tham số ban đầu cho Actor network (mạng chính sách) và Critic network (mạng đánh giá giá trị).
 
 **For iteration = 1, 2, ... do**:
-1. **Collect trajectories**: Chạy policy π_θ trong môi trường để thu thập N steps
-2. **Compute advantages**: Tính A_t sử dụng GAE
-3. **Update policy**: Tối ưu L^CLIP(θ) với K epochs và minibatch size M
-4. **Update value function**: Tối ưu value function để fit với returns
 
-**Output**: Policy tối ưu π_θ*
+**Collect trajectories (Thu thập dữ liệu)**: Agent sử dụng chính sách hiện tại để tương tác với môi trường và thu thập một số lượng bước nhất định (thường là 2048 bước). Mỗi bước ghi lại thông tin: trạng thái hiện tại, hành động đã thực hiện, phần thưởng nhận được, và trạng thái tiếp theo. Tập dữ liệu này sẽ được sử dụng để cải thiện chính sách trong các bước tiếp theo.
+
+**Compute advantages (Tính toán advantage)**: Sử dụng Critic network để ước lượng giá trị của mỗi trạng thái. Sau đó tính toán advantage - một chỉ số cho biết hành động tại trạng thái đó tốt hơn hay tệ hơn so với mức trung bình. Advantage được tính bằng phương pháp GAE (Generalized Advantage Estimation), kết hợp thông tin từ nhiều bước thời gian để có ước lượng chính xác hơn. Advantage dương nghĩa là hành động tốt, advantage âm nghĩa là hành động tệ.
+
+**Update policy (Cập nhật policy)**: Cập nhật Actor network (mạng chính sách) dựa trên advantage đã tính. Quá trình này được thực hiện qua nhiều epochs (thường 4-10 lần) trên cùng một tập dữ liệu để tận dụng tối đa thông tin. Dữ liệu được chia thành các batch nhỏ để tối ưu hóa hiệu quả. Mục tiêu là tăng xác suất chọn các hành động có advantage cao (hành động tốt) và giảm xác suất chọn các hành động có advantage thấp (hành động tệ). PPO sử dụng cơ chế clipping để đảm bảo chính sách không thay đổi quá nhanh, giữ cho quá trình training ổn định.
+
+**Update value function (Cập nhật value function)**: Cập nhật Critic network (mạng đánh giá giá trị) để dự đoán chính xác hơn giá trị của các trạng thái. Mạng này được huấn luyện để dự đoán tổng phần thưởng kỳ vọng từ mỗi trạng thái, giúp tính toán advantage chính xác hơn trong các vòng lặp tiếp theo.
+
+**Output**: Chính sách tối ưu sau khi quá trình training hội tụ hoặc đạt được hiệu suất mong muốn.
+
+Quá trình này lặp lại cho đến khi chính sách học được cách đưa ra quyết định tốt. Mỗi vòng lặp sử dụng dữ liệu mới được thu thập từ chính sách hiện tại, đảm bảo agent luôn học từ những gì nó đang làm (on-policy learning).
 
 ### 4.6. Hyperparameters Quan Trọng
 
-**Learning Rate**: Tốc độ học (thường 3e-4)
-- Quá cao: Training không ổn định
-- Quá thấp: Học chậm
-
-**Clip Range (ε)**: Phạm vi clip (thường 0.1-0.2)
-- Kiểm soát độ lớn của policy update
-
-**n_steps**: Số steps thu thập trước mỗi update (thường 2048)
-- Trade-off giữa sample efficiency và update frequency
-
-**n_epochs**: Số epochs tối ưu trên cùng một batch (thường 4-10)
-- Tận dụng dữ liệu hiệu quả hơn
-
-**Batch Size**: Kích thước minibatch (thường 64-256)
-- Ảnh hưởng đến stability và speed
-
-**Gamma (γ)**: Discount factor (thường 0.99)
-- Điều chỉnh tầm quan trọng của phần thưởng tương lai
-- Quan trọng cho bài toán rescheduling với switching cost
-
-**GAE Lambda (λ)**: GAE parameter (thường 0.95)
-- Cân bằng giữa bias và variance trong advantage estimation
-
-**Entropy Coefficient**: Khuyến khích exploration (thường 0.01)
-- Giúp agent khám phá các hành động mới
-- Quan trọng để tránh stuck ở local optima
+Các hyperparameters chính của PPO:
+- **Learning Rate**: Tốc độ học (thường $3 \times 10^{-4}$)
+- **Clip Range ($\epsilon$)**: Phạm vi clip (thường 0.1-0.2)
+- **n_steps**: Số steps thu thập trước mỗi update (thường 2048)
+- **n_epochs**: Số epochs tối ưu trên cùng một batch (thường 4-10)
+- **Gamma ($\gamma$)**: Discount factor (thường 0.99), quan trọng cho bài toán rescheduling
+- **GAE Lambda ($\lambda$)**: GAE parameter (thường 0.95)
+- **Entropy Coefficient**: Khuyến khích exploration (thường 0.01)
 
 ### 4.7. Architecture của Neural Network
 
-Trong PPO, thường sử dụng **Actor-Critic** architecture:
-
-**Actor Network (Policy Network)**:
-- Input: State s
-- Output: Policy distribution π(a|s)
-- Mục tiêu: Tối ưu policy để tối đa hóa expected return
-
-**Critic Network (Value Network)**:
-- Input: State s
-- Output: Value estimate V(s)
-- Mục tiêu: Ước lượng giá trị của trạng thái để tính advantage
-
-**Shared Network**:
-- Thường chia sẻ các layers đầu giữa Actor và Critic
-- Giảm số lượng parameters và tăng hiệu quả training
+PPO sử dụng **Actor-Critic** architecture:
+- **Actor Network**: Nhận state $s$, xuất policy distribution $\pi(a|s)$
+- **Critic Network**: Nhận state $s$, xuất value estimate $V(s)$
+- **Shared Network**: Thường chia sẻ các layers đầu giữa Actor và Critic để giảm parameters và tăng hiệu quả training
 
 ## 5. Ưu Điểm và Hạn Chế
 
@@ -293,92 +188,39 @@ Deep Reinforcement Learning là một phương pháp mạnh mẽ cho các bài t
 
 ### 5.1. Ưu Điểm
 
-Mặc dù có một số hạn chế, Deep Reinforcement Learning vẫn là một phương pháp được sử dụng rộng rãi cho bài toán Allocation/Rescheduling nhờ những ưu điểm nổi bật sau đây:
+Deep Reinforcement Learning được sử dụng rộng rãi cho bài toán Allocation/Rescheduling nhờ những ưu điểm sau:
 
-1. **Xử lý Sequential Decisions hiệu quả**:
-   - Tối ưu hóa các quyết định theo thời gian, xem xét tác động dài hạn
-   - Có thể học được switching cost patterns và tối ưu chi phí chuyển đổi qua nhiều bước
-   - Phù hợp với bài toán rescheduling cần nhìn xa về tương lai
-   - Agent học được khi nào nên thay đổi allocation và khi nào nên giữ nguyên
+**Xử lý Sequential Decisions hiệu quả**: DRL tối ưu hóa các quyết định theo thời gian, xem xét tác động dài hạn. Agent học được patterns của switching cost và tối ưu chi phí chuyển đổi qua nhiều bước, phù hợp với bài toán rescheduling cần nhìn xa về tương lai.
 
-2. **Tối ưu Multi-objective tự nhiên**:
-   - Có thể cân bằng nhiều mục tiêu mâu thuẫn thông qua reward function
-   - Học được trade-off giữa các mục tiêu từ dữ liệu
-   - Linh hoạt trong việc điều chỉnh weights để phù hợp với từng scenario
-   - Agent học được cách cân bằng các mục tiêu một cách tự nhiên
+**Tối ưu Multi-objective tự nhiên**: DRL cân bằng nhiều mục tiêu mâu thuẫn thông qua reward function. Agent học được trade-off giữa các mục tiêu từ dữ liệu một cách tự nhiên, linh hoạt điều chỉnh để phù hợp với từng scenario.
 
-3. **Thích ứng với Uncertainty**:
-   - Có thể học cách xử lý uncertainty trong nhu cầu và forecast
-   - Robust với các thay đổi trong môi trường
-   - Agent học được cách đối phó với forecast errors
-   - Thích ứng với dynamic environments có patterns thay đổi
+**Thích ứng với Uncertainty**: DRL học cách xử lý uncertainty trong nhu cầu và forecast, robust với các thay đổi trong môi trường và thích ứng với dynamic environments có patterns thay đổi.
 
-4. **Học Patterns phức tạp**:
-   - Deep neural networks có khả năng học các patterns phức tạp từ dữ liệu
-   - Có thể học được các quan hệ phi tuyến
-   - Xử lý được state space lớn và phức tạp
-   - Học được temporal patterns (daily/weekly cycles) từ time features
+**Học Patterns phức tạp**: Deep neural networks học các patterns phức tạp và quan hệ phi tuyến từ dữ liệu, xử lý được state space lớn và học được temporal patterns như daily/weekly cycles.
 
-5. **Không cần nghiệm nguyên**:
-   - Action space có thể là discrete (số nguyên)
-   - Phù hợp với bài toán thực tế cần nghiệm nguyên
-   - Không có vấn đề về divisibility
+**Không cần nghiệm nguyên**: Action space có thể là discrete (số nguyên), phù hợp với bài toán thực tế cần nghiệm nguyên như phân bổ số lượng VM.
 
-6. **Không cần mô hình toán học chính xác**:
-   - Agent học từ kinh nghiệm thông qua tương tác với môi trường
-   - Không cần biết chính xác transition probabilities
-   - Phù hợp với các bài toán phức tạp khó mô hình hóa bằng toán học
+**Không cần mô hình toán học chính xác**: Agent học từ kinh nghiệm thông qua tương tác với môi trường, không cần biết chính xác transition probabilities, phù hợp với các bài toán phức tạp khó mô hình hóa bằng toán học.
 
 ### 5.2. Hạn Chế
 
-Mặc dù có nhiều ưu điểm, Deep Reinforcement Learning cũng có những hạn chế nhất định do bản chất của phương pháp học từ dữ liệu. Việc hiểu rõ các hạn chế này giúp xác định khi nào DRL phù hợp và khi nào cần các phương pháp thay thế:
+Deep Reinforcement Learning có những hạn chế nhất định do bản chất của phương pháp học từ dữ liệu:
 
-1. **Cần nhiều dữ liệu và thời gian training**:
-   - Agent cần tương tác với môi trường nhiều lần để học (hàng triệu timesteps)
-   - Training có thể mất hàng giờ đến hàng ngày tùy vào độ phức tạp
-   - Sample efficiency thấp hơn so với supervised learning
-   - Yêu cầu computational resources đáng kể (GPU)
+**Cần nhiều dữ liệu và thời gian training**: Agent cần tương tác với môi trường nhiều lần (hàng triệu timesteps), training có thể mất hàng giờ đến hàng ngày. Sample efficiency thấp hơn supervised learning và yêu cầu GPU để training hiệu quả.
 
-2. **Không đảm bảo optimality**:
-   - DRL tìm được nghiệm gần tối ưu, không đảm bảo global optimum
-   - Phụ thuộc vào initialization và hyperparameters
-   - Có thể bị stuck ở local optima
-   - Performance có thể không nhất quán giữa các lần training
+**Không đảm bảo optimality**: DRL tìm được nghiệm gần tối ưu nhưng không đảm bảo global optimum. Kết quả phụ thuộc vào initialization và hyperparameters, có thể bị stuck ở local optima và performance không nhất quán giữa các lần training.
 
-3. **Hyperparameter tuning phức tạp**:
-   - Có nhiều hyperparameters cần điều chỉnh (learning rate, clip range, network architecture, etc.)
-   - Reward function design cũng là một thách thức
-   - Ảnh hưởng lớn đến performance nhưng khó tune
-   - Cần nhiều thử nghiệm và kinh nghiệm
+**Hyperparameter tuning phức tạp**: Có nhiều hyperparameters cần điều chỉnh (learning rate, clip range, network architecture, reward function design) ảnh hưởng lớn đến performance nhưng khó tune, đòi hỏi nhiều thử nghiệm.
 
-4. **Khó interpret và debug**:
-   - Khó hiểu tại sao agent đưa ra quyết định cụ thể
-   - Black box nature của deep neural networks
-   - Khó debug khi performance không tốt
-   - Khó giải thích cho stakeholders
+**Khó interpret và debug**: Khó hiểu tại sao agent đưa ra quyết định cụ thể do black box nature của deep neural networks. Debug khó khăn khi performance không tốt và khó giải thích cho stakeholders.
 
-5. **Reward function design**:
-   - Thiết kế reward function là một nghệ thuật, ảnh hưởng lớn đến behavior của agent
-   - Reward shaping không đúng có thể dẫn đến behavior không mong muốn
-   - Cần cân bằng các thành phần trong reward function
-   - Agent có thể học cách exploit reward thay vì giải quyết bài toán thực tế
+**Reward function design**: Thiết kế reward function là thách thức lớn, ảnh hưởng trực tiếp đến behavior của agent. Reward shaping không đúng có thể dẫn đến behavior không mong muốn, và agent có thể exploit reward thay vì giải quyết bài toán thực tế.
 
-6. **Stability và reproducibility**:
-   - Training có thể không ổn định, đặc biệt với learning rate cao
-   - Kết quả có thể khác nhau giữa các lần chạy do randomness
-   - Cần set random seeds để reproducibility
-   - Có thể cần nhiều lần training để có kết quả tốt
+**Stability và reproducibility**: Training có thể không ổn định, kết quả khác nhau giữa các lần chạy do randomness. Có thể cần nhiều lần training để có kết quả tốt và ổn định.
 
-7. **Exploration vs Exploitation trade-off**:
-   - Agent cần khám phá môi trường nhưng cũng cần khai thác những gì đã học
-   - Cân bằng này khó và phụ thuộc vào entropy coefficient
-   - Quá ít exploration: có thể bỏ lỡ nghiệm tốt hơn
-   - Quá nhiều exploration: học chậm và không hiệu quả
+**Exploration vs Exploitation trade-off**: Cân bằng giữa khám phá môi trường và khai thác những gì đã học là khó, phụ thuộc vào entropy coefficient. Quá ít exploration bỏ lỡ nghiệm tốt hơn, quá nhiều exploration làm chậm quá trình học.
 
-8. **Computational resources**:
-   - Cần GPU để training hiệu quả với deep neural networks
-   - Memory requirements cao cho large state/action spaces
-   - Training cost có thể cao
+**Computational resources**: Cần GPU để training hiệu quả, memory requirements cao cho large state/action spaces, và training cost có thể cao.
 
 ## Tài Liệu Tham Khảo
 
