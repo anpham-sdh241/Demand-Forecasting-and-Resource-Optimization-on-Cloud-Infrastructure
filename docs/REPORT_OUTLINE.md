@@ -66,6 +66,8 @@ Dự án này nghiên cứu và triển khai hệ thống dự báo nhu cầu t�
 - Chương 3: Thiết kế và thực hiện (kiến trúc, pipeline, experiments)
 - Chương 4: Kết luận và hướng phát triển
 
+**Mã nguồn và tài nguyên**: Toàn bộ mã nguồn, notebooks, và scripts của nghiên cứu được công khai trên GitHub repository [link GitHub]. Repository bao gồm ETL pipeline, các mô hình dự báo (ARIMAX, SVR, Random Forest, Hybrid Prophet-LSTM), implementation của thuật toán tối ưu hóa (Linear Programming và PPO), cùng với các scripts đánh giá và so sánh kết quả. Tất cả code đều có documentation đầy đủ và có thể chạy lại để reproduce các kết quả trong nghiên cứu.
+
 ---
 
 ### Chương 2. Kiến Thức Nền Tảng
@@ -170,6 +172,8 @@ Dự án này nghiên cứu và triển khai hệ thống dự báo nhu cầu t�
   - Forecasting module (multiple models)
   - Optimization module (LP baseline, DRL agent)
   - Evaluation and comparison module
+
+**Implementation**: Toàn bộ implementation của hệ thống được công khai trên GitHub repository [link GitHub]. Kiến trúc được triển khai trong các notebooks và Python scripts, bao gồm `etl_cloud_resource_forecasting.ipynb` cho ETL pipeline, các notebooks trong `forecast_model/` cho training và evaluation các mô hình dự báo, `vm_resource_planner.py` cho Linear Programming, và `train_ppo.py` cùng `eval_ppo.py` cho Deep Reinforcement Learning. Tất cả các components đều có thể chạy độc lập hoặc tích hợp vào pipeline hoàn chỉnh.
 
 #### 3.2 Dữ Liệu, Tiền Xử Lý và Huấn Luyện Mô Hình Dự Báo
 - **ETL Pipeline** (`etl_cloud_resource_forecasting.ipynb`):
@@ -287,4 +291,5 @@ Dự án này nghiên cứu và triển khai hệ thống dự báo nhu cầu t�
 - **File structure**: Tất cả code và data được tổ chức trong project directory
 - **Reproducibility**: Các notebooks và scripts có thể chạy lại để reproduce kết quả
 - **Documentation**: Chi tiết implementation trong code comments và docstrings
+- **GitHub Repository**: Mã nguồn đầy đủ của nghiên cứu được công khai tại [link GitHub]. Repository bao gồm tất cả notebooks, scripts, configuration files, và documentation cần thiết để reproduce các kết quả thực nghiệm. Các file chính bao gồm ETL pipeline (`etl_cloud_resource_forecasting.ipynb`), mô hình dự báo (`forecast_model/`), thuật toán tối ưu hóa (`vm_resource_planner.py`, `train_ppo.py`), và scripts so sánh (`lp_vs_ppo_comparison.ipynb`). README.md trong repository cung cấp hướng dẫn chi tiết về cách setup môi trường, chạy các experiments, và reproduce kết quả.
 

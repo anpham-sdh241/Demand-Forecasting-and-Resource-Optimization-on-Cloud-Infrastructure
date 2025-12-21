@@ -1,0 +1,112 @@
+{
+  "timestamp": "2025-12-21 21:14:05",
+  "comparison_type": "per-step by scenario (corrected cost)",
+  "n_steps": 17150,
+  "step_duration_seconds": 30,
+  "step_duration_hours": 0.008333333333333333,
+  "total_duration_hours": 142.91666666666666,
+  "cost_calculation_note": "VM cost is multiplied by step_duration_hours (per-hour). Switching cost is one-time (not multiplied by time).",
+  "utilization_calculation_note": "CPU/Memory Utilization calculated on total allocated (host + VM)",
+  "scenarios": {
+    "overload": {
+      "LP": {
+        "Method": "LP",
+        "Steps": 17150,
+        "Total VMs": 394,
+        "Avg VMs/Step": 0.023,
+        "Max VMs": 1,
+        "Steps with VMs": 394,
+        "CPU Util %": 18.36,
+        "Mem Util %": 7.75,
+        "CPU Util % (Host Only)": 18.71,
+        "CPU Util % (With VM)": 3.62,
+        "Mem Util % (Host Only)": 7.93,
+        "Mem Util % (With VM)": 0.19,
+        "Total Cost ($)": 20.7432,
+        "Total VM Cost ($)": 5.0432,
+        "Total Switching Cost ($)": 15.7,
+        "Avg Cost/Step ($/h)": 0.0353,
+        "SLA Violations": 0
+      },
+      "PPO": {
+        "Method": "PPO",
+        "Steps": 17150,
+        "Total VMs": 1752,
+        "Avg VMs/Step": 0.102,
+        "Max VMs": 19,
+        "Steps with VMs": 389,
+        "CPU Util %": 18.59,
+        "Mem Util %": 7.76,
+        "CPU Util % (Host Only)": 18.75,
+        "CPU Util % (With VM)": 11.6,
+        "Mem Util % (Host Only)": 7.93,
+        "Mem Util % (With VM)": 0.67,
+        "Total Cost ($)": 22.3444,
+        "Total VM Cost ($)": 1.5444,
+        "Total Switching Cost ($)": 20.8,
+        "Avg Cost/Step ($/h)": 0.0108,
+        "SLA Violations": 5
+      },
+      "winner": {
+        "scenario": "OVERLOAD",
+        "vm": "LP",
+        "util": "PPO",
+        "cost": "LP",
+        "sla": "LP"
+      }
+    },
+    "cost": {
+      "LP": {
+        "Method": "LP",
+        "Steps": 17150,
+        "Total VMs": 394,
+        "Avg VMs/Step": 0.023,
+        "Max VMs": 1,
+        "Steps with VMs": 394,
+        "CPU Util %": 19.29,
+        "Mem Util %": 7.83,
+        "CPU Util % (Host Only)": 18.71,
+        "CPU Util % (With VM)": 43.87,
+        "Mem Util % (Host Only)": 7.93,
+        "Mem Util % (With VM)": 3.63,
+        "Total Cost ($)": 1.7066,
+        "Total VM Cost ($)": 0.1366,
+        "Total Switching Cost ($)": 1.57,
+        "Avg Cost/Step ($/h)": 0.001,
+        "SLA Violations": 0
+      },
+      "PPO": {
+        "Method": "PPO",
+        "Steps": 17150,
+        "Total VMs": 1193,
+        "Avg VMs/Step": 0.07,
+        "Max VMs": 16,
+        "Steps with VMs": 220,
+        "CPU Util %": 20.23,
+        "Mem Util %": 7.83,
+        "CPU Util % (Host Only)": 20.29,
+        "CPU Util % (With VM)": 16.01,
+        "Mem Util % (Host Only)": 7.92,
+        "Mem Util % (With VM)": 1.0,
+        "Total Cost ($)": 17.0739,
+        "Total VM Cost ($)": 0.8439,
+        "Total Switching Cost ($)": 16.23,
+        "Avg Cost/Step ($/h)": 0.0059,
+        "SLA Violations": 174
+      },
+      "winner": {
+        "scenario": "COST",
+        "vm": "LP",
+        "util": "PPO",
+        "cost": "LP",
+        "sla": "LP"
+      }
+    }
+  },
+  "overall_best": {
+    "vm_count": "LP (Overload)",
+    "utilization": "PPO (Cost)",
+    "cost": "LP (Cost)",
+    "sla": "LP (Overload)"
+  }
+}

@@ -1,7 +1,8 @@
 .venv/
 models/
 __pycache__/
-
+docs/
+rl_models_backup_*/
 # DRL / PPO
 rl_models/checkpoints_*/
 rl_models/best_*/

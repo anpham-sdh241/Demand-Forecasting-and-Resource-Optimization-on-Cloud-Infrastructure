@@ -1,5 +1,6 @@
 {
   "model": "vm_resource_planner_notebook_reactive",
+  "timestamp": "2025-12-18 00:53:03",
   "host_spec": {
     "total_cpu_cores": 1,
     "total_memory_gb": 4,
@@ -9,30 +10,26 @@
   "scenarios": {
     "overload": {
       "metrics": {
-        "total_vm_cost": 4205.568,
-        "total_switching_cost": 112.7,
-        "total_cost": 4318.268,
-        "total_cost_step": 148.6855666666667,
-        "total_vms_sum": 2738,
-        "avg_vms": 0.15965014577259476,
-        "mean_cpu_utilization_pct": 0.8948371160095208,
-        "mean_mem_utilization_pct": 0.0,
+        "total_vm_cost": 605.1840000000001,
+        "total_switching_cost": 15.7,
+        "total_cost": 620.8840000000001,
         "sla_violations": 0,
-        "sla_violation_rate": 0.0
+        "sla_violation_rate": 0.0,
+        "mean_cpu_utilization": 0.03478846292974774,
+        "mean_mem_utilization": 0.0,
+        "n_steps": 17150
       }
     },
     "cost": {
       "metrics": {
-        "total_vm_cost": 167.02399999999997,
-        "total_switching_cost": 24.73,
-        "total_cost": 191.754,
-        "total_cost_step": 26.32795,
-        "total_vms_sum": 4015,
-        "avg_vms": 0.23411078717201167,
-        "mean_cpu_utilization_pct": 8.56099155045171,
-        "mean_mem_utilization_pct": 0.0,
+        "total_vm_cost": 16.3904,
+        "total_switching_cost": 1.57,
+        "total_cost": 17.9604,
         "sla_violations": 0,
-        "sla_violation_rate": 0.0
+        "sla_violation_rate": 0.0,
+        "mean_cpu_utilization": 0.5566154068759639,
+        "mean_mem_utilization": 0.0,
+        "n_steps": 17150
       }
     }
   }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-17 11:55:30",
+  "timestamp": "2025-12-21 19:50:34",
   "comparison_type": "per-step by scenario",
   "n_steps": 17150,
   "scenarios": {
@@ -7,14 +7,14 @@
       "LP": {
         "Method": "LP",
         "Steps": 17150,
-        "Total VMs": 2738,
-        "Avg VMs/Step": 0.16,
+        "Total VMs": 394,
+        "Avg VMs/Step": 0.023,
         "Max VMs": 1,
-        "Steps with VMs": 2738,
-        "CPU Util %": 5.6,
+        "Steps with VMs": 394,
+        "CPU Util %": 1.51,
         "Mem Util %": 0.0,
-        "Total Cost ($/h)": 4205.568,
-        "Avg Cost/Step": 0.2452,
+        "Total Cost ($/h)": 620.884,
+        "Avg Cost/Step": 0.0362,
         "SLA Violations": 0
       },
       "PPO": {
@@ -26,14 +26,14 @@
         "Steps with VMs": 389,
         "CPU Util %": 5.1,
         "Mem Util %": 0.0,
-        "Total Cost ($/h)": 185.3248,
-        "Avg Cost/Step": 0.0108,
+        "Total Cost ($/h)": 206.1248,
+        "Avg Cost/Step": 0.012,
         "SLA Violations": 5
       },
       "winner": {
         "scenario": "OVERLOAD",
-        "vm": "PPO",
-        "util": "LP",
+        "vm": "LP",
+        "util": "PPO",
         "cost": "PPO",
         "sla": "LP"
       }
@@ -42,14 +42,14 @@
       "LP": {
         "Method": "LP",
         "Steps": 17150,
-        "Total VMs": 4015,
-        "Avg VMs/Step": 0.234,
-        "Max VMs": 7,
-        "Steps with VMs": 2738,
-        "CPU Util %": 53.62,
+        "Total VMs": 394,
+        "Avg VMs/Step": 0.023,
+        "Max VMs": 1,
+        "Steps with VMs": 394,
+        "CPU Util %": 24.23,
         "Mem Util %": 0.0,
-        "Total Cost ($/h)": 167.024,
-        "Avg Cost/Step": 0.0097,
+        "Total Cost ($/h)": 17.9604,
+        "Avg Cost/Step": 0.001,
         "SLA Violations": 0
       },
       "PPO": {
@@ -61,23 +61,23 @@
         "Steps with VMs": 220,
         "CPU Util %": 8.02,
         "Mem Util %": 0.0,
-        "Total Cost ($/h)": 101.2704,
-        "Avg Cost/Step": 0.0059,
+        "Total Cost ($/h)": 117.5004,
+        "Avg Cost/Step": 0.0069,
         "SLA Violations": 174
       },
       "winner": {
         "scenario": "COST",
-        "vm": "PPO",
+        "vm": "LP",
         "util": "LP",
-        "cost": "PPO",
+        "cost": "LP",
         "sla": "LP"
       }
     }
   },
   "overall_best": {
-    "vm_count": "PPO (Cost)",
+    "vm_count": "LP (Overload)",
     "utilization": "LP (Cost)",
-    "cost": "PPO (Cost)",
+    "cost": "LP (Cost)",
     "sla": "LP (Overload)"
   }
 }

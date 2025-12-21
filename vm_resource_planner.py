@@ -186,28 +186,51 @@ def load_latest_models(model_name: str) -> Dict[str, Path]:
 def load_ground_truth_df() -> pd.DataFrame:
     """
     Build a DataFrame that mimics a streaming ground-truth feed using y_test of all targets.
+    Uses actual datetime from cleaned_data.csv to match PPO timestamp format.
+    
+    IMPORTANT: This function loads from cleaned_data.csv via rl.utils.load_data()
+    - load_data() reads processed_data/cleaned_data.csv
+    - Splits into train (80%) and test (20%)
+    - Returns test_df which is the last 20% of cleaned_data.csv
+    - test_df contains: datetime, memory_usage_pct, cpu_total_usage, system_load (original scale)
 
     Returns:
         DataFrame with columns: timestamp, memory_usage_pct, cpu_total_usage, system_load
+        (values in original scale, matching cleaned_data.csv test portion, same as PPO uses)
     """
-    records: Dict[str, np.ndarray] = {}
-    timestamps = None
-
-    for target in TARGETS:
-        _y_train, y_test = load_series(target)
-        records[target] = y_test.values
-        if timestamps is None:
-            time_index = pd.date_range(
-                start=START_TIMESTAMP, periods=len(y_test), freq=SERIES_FREQ
-            )
-            timestamps = time_index
-
-    if timestamps is None:
-        raise RuntimeError("No ground truth available.")
-
+    # Load test data from cleaned_data.csv via rl.utils.load_data()
+    # This is the SAME source that PPO uses for evaluation
+    from rl.utils import load_data
+    _, test_df = load_data()  # test_df = last 20% of cleaned_data.csv
+    
+    # Verify we have the required columns
+    required_cols = ["datetime"] + TARGETS
+    missing_cols = [col for col in required_cols if col not in test_df.columns]
+    if missing_cols:
+        raise ValueError(
+            f"Missing required columns in test_df from cleaned_data.csv: {missing_cols}\n"
+            f"Available columns: {list(test_df.columns)}"
+        )
+    
+    # Use datetime from test_df (which matches cleaned_data.csv test portion)
+    timestamps = pd.to_datetime(test_df["datetime"])
+    
+    # Use actual values from test_df (already in original scale, matching PPO)
+    # This ensures we use the EXACT SAME data as PPO
     df = pd.DataFrame({"timestamp": timestamps})
+    
+    # Extract target values directly from test_df (original scale, not normalized)
+    # cleaned_data.csv already contains these in original scale
     for target in TARGETS:
-        df[target] = records[target]
+        if target in test_df.columns:
+            df[target] = test_df[target].values
+        else:
+            # Fallback: should not happen if cleaned_data.csv is correct
+            raise ValueError(
+                f"Target '{target}' not found in test_df from cleaned_data.csv. "
+                f"Available columns: {list(test_df.columns)}"
+            )
+    
     return df
 
 
@@ -547,9 +570,18 @@ def summarize_peak_plans(
 # -----------------------------------------------------------------------------
 
 def format_allocation(allocation: Dict[str, int]) -> str:
-    if not allocation:
-        return "No VMs"
-    return ", ".join(f"{vm}×{count}" for vm, count in allocation.items())
+    """
+    Format VM allocation dictionary to string (matching PPO format).
+    
+    Returns:
+        Formatted string like "B2s:1, D2s_v3:2" or "Host only"
+    """
+    if not allocation or all(v == 0 for v in allocation.values()):
+        return "Host only"
+    
+    # Use ':' instead of '×' to match PPO format and avoid CSV encoding issues
+    parts = [f"{vm}:{count}" for vm, count in allocation.items() if count > 0]
+    return ", ".join(parts)
 
 
 def build_schedule(
@@ -622,43 +654,62 @@ def build_reactive_schedule_for_scenario(
 ) -> pd.DataFrame:
     """
     Solve LP per timestamp for a specific scenario.
+    Output format matches PPO format exactly.
     
     Args:
-        requirements_df: DataFrame with cpu_overflow_cores, memory_overflow_gb
+        requirements_df: DataFrame with timestamp, cpu_required_cores, mem_required_gb, 
+                        cpu_overflow_cores, memory_overflow_gb
         vm_catalog: List of VM specifications
         scenario: "cost" or "overload"
         
     Returns:
-        DataFrame with per-step allocation and metrics
+        DataFrame with columns matching PPO format:
+        timestamp, allocation, vm_cost_per_hour, switching_cost, total_cost_per_hour,
+        cpu_allocated_cores, mem_allocated_gb, cpu_vm_only, mem_vm_only,
+        cpu_required_cores, mem_required_gb, cpu_overflow_cores, mem_overflow_gb,
+        cpu_utilization_pct, mem_utilization_pct, sla_violation_flag
     """
     records = []
     prev_alloc: Dict[str, int] = {}
     vm_catalog_map = {vm["name"]: vm for vm in vm_catalog}
     
     objective = "cost" if scenario == "cost" else "capacity"
+    
+    # Host thresholds
+    cpu_threshold = HOST_SPEC["total_cpu_cores"] * HOST_SPEC["cpu_threshold_pct"] / 100.0
+    mem_threshold = HOST_SPEC["total_memory_gb"] * HOST_SPEC["memory_threshold_pct"] / 100.0
 
     for _, row in requirements_df.iterrows():
-        cpu_req = float(row["cpu_overflow_cores"])
-        mem_req = float(row["memory_overflow_gb"])
+        # Get requirements (already computed in requirements_df)
+        cpu_required = float(row.get("cpu_required_cores", 0))
+        mem_required = float(row.get("memory_required_gb", 0))
+        cpu_overflow = float(row.get("cpu_overflow_cores", 0))
+        mem_overflow = float(row.get("memory_overflow_gb", 0))
+
+        # Use overflow for LP allocation
+        cpu_req = cpu_overflow
+        mem_req = mem_overflow
 
         if cpu_req <= 0 and mem_req <= 0:
+            # Host only case
             records.append(
                 {
                     "timestamp": row["timestamp"],
-                    "cpu_overflow_cores": cpu_req,
-                    "memory_overflow_gb": mem_req,
                     "allocation": "Host only",
-                    "vm_total_count": 0,
                     "vm_cost_per_hour": 0.0,
-                    "vm_cost_per_step": 0.0,
                     "switching_cost": 0.0,
                     "total_cost_per_hour": 0.0,
-                    "total_cost_per_step": 0.0,
-                    "vm_cpu_allocated": 0.0,
-                    "vm_mem_allocated": 0.0,
-                    "sla_violation": 0,
+                    "cpu_allocated_cores": cpu_threshold,  # Host threshold only
+                    "mem_allocated_gb": mem_threshold,     # Host threshold only
+                    "cpu_vm_only": 0.0,
+                    "mem_vm_only": 0.0,
+                    "cpu_required_cores": cpu_required,
+                    "mem_required_gb": mem_required,
+                    "cpu_overflow_cores": cpu_overflow,
+                    "mem_overflow_gb": mem_overflow,
                     "cpu_utilization_pct": 0.0,
                     "mem_utilization_pct": 0.0,
+                    "sla_violation_flag": 0,
                 }
             )
             prev_alloc = {}
@@ -681,30 +732,43 @@ def build_reactive_schedule_for_scenario(
 
         switch_cost = compute_switching_cost(prev_alloc, allocation, vm_catalog_map)
         total_cost = vm_cost + switch_cost
-        vm_cost_step = vm_cost * STEP_HOURS
-        total_cost_step = total_cost * STEP_HOURS + switch_cost
 
-        cpu_util = min(100.0, (cpu_req / vm_cpu * 100.0)) if vm_cpu > 0 else (100.0 if cpu_req > 0 else 0.0)
-        mem_util = min(100.0, (mem_req / vm_mem * 100.0)) if vm_mem > 0 else (100.0 if mem_req > 0 else 0.0)
-        sla_violation = int(vm_cpu < cpu_req or vm_mem < mem_req)
+        # Total allocated = Host threshold + VM resources
+        cpu_alloc_total = cpu_threshold + vm_cpu
+        mem_alloc_total = mem_threshold + vm_mem
+
+        # Compute utilization (based on VM allocation only, like PPO)
+        if vm_cpu > 0:
+            cpu_util = min(100.0, (cpu_overflow / vm_cpu * 100.0))
+        else:
+            cpu_util = 0.0 if cpu_overflow <= 0 else 100.0
+
+        if vm_mem > 0:
+            mem_util = min(100.0, (mem_overflow / vm_mem * 100.0))
+        else:
+            mem_util = 0.0 if mem_overflow <= 0 else 100.0
+
+        # Check SLA violation: total available must meet total demand
+        sla_violated = int(cpu_alloc_total < cpu_required or mem_alloc_total < mem_required)
 
         records.append(
             {
                 "timestamp": row["timestamp"],
-                "cpu_overflow_cores": cpu_req,
-                "memory_overflow_gb": mem_req,
                 "allocation": format_allocation(allocation),
-                "vm_total_count": vm_count,
                 "vm_cost_per_hour": vm_cost,
-                "vm_cost_per_step": vm_cost_step,
                 "switching_cost": switch_cost,
                 "total_cost_per_hour": total_cost,
-                "total_cost_per_step": total_cost_step,
-                "vm_cpu_allocated": vm_cpu,
-                "vm_mem_allocated": vm_mem,
-                "sla_violation": sla_violation,
+                "cpu_allocated_cores": cpu_alloc_total,  # Host + VMs
+                "mem_allocated_gb": mem_alloc_total,     # Host + VMs
+                "cpu_vm_only": vm_cpu,                   # VMs only
+                "mem_vm_only": vm_mem,                   # VMs only
+                "cpu_required_cores": cpu_required,
+                "mem_required_gb": mem_required,
+                "cpu_overflow_cores": cpu_overflow,
+                "mem_overflow_gb": mem_overflow,
                 "cpu_utilization_pct": cpu_util,
                 "mem_utilization_pct": mem_util,
+                "sla_violation_flag": sla_violated,
             }
         )
         prev_alloc = allocation
